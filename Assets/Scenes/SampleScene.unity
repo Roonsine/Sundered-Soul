@@ -13994,7 +13994,7 @@ GameObject:
   m_Component:
   - component: {fileID: 831640681}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37043,6 +37043,10 @@ MonoBehaviour:
   horizontal: 0
   moveAmount: 0
   moveDir: {x: 0, y: 0, z: 0}
+  rt: 0
+  rb: 0
+  lt: 0
+  lb: 0
   moveSpeed: 3
   runSpeed: 5
   rotateSpeed: 9
@@ -37050,6 +37054,8 @@ MonoBehaviour:
   run: 0
   onGround: 0
   lockOn: 0
+  inAction: 0
+  canMove: 0
   anim: {fileID: 0}
   rigid: {fileID: 0}
   delta: 0
