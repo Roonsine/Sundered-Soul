@@ -28,11 +28,14 @@ namespace SS
         public bool lockOn;
         public bool inAction;
         public bool canMove;
+        public bool isTwoHanded;
 
         [HideInInspector]
         public Animator anim;
         [HideInInspector]
         public Rigidbody rigid;
+        [HideInInspector]
+        public AnimatorHook a_hook;
 
         [HideInInspector]
         public float delta;
@@ -48,6 +51,10 @@ namespace SS
             rigid.angularDrag = 999;
             rigid.drag = 4;
             rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
+            a_hook = activeModel.AddComponent<AnimatorHook>();
+            a_hook.Init(this);
+
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
 
@@ -81,6 +88,7 @@ namespace SS
 
             if (inAction)
             {
+                anim.applyRootMotion = true;
                 canMove = false;
                 _actionDelay += delta;
                 if (_actionDelay > 1)
@@ -98,7 +106,7 @@ namespace SS
             canMove = anim.GetBool("can_move");
             if (!canMove)
                 return;
-
+            anim.applyRootMotion = false;
 
             rigid.drag = (moveAmount > 0 || onGround == false) ? 0 : 4;         
             float targetSpeed = moveSpeed;
@@ -180,5 +188,9 @@ namespace SS
             return r;
         }
 
+        public void HandleTwoHanded()
+        {
+            anim.SetBool("two_handed", isTwoHanded);
+        }
     }
 }
