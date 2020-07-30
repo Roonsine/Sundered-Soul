@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Library
+/ProjectSettings
+/Temp
+/Assets/Thirdparty/Gridbox Prototype Materials
