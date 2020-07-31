@@ -15,12 +15,14 @@ namespace SS
         public float moveAmount;
         public Vector3 moveDir;
         public bool rt, rb, lt, lb;
+        public bool rollInput;
 
         [Header("stats")]
         public float moveSpeed = 2;
         public float runSpeed = 3.5f;
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
+        public float rollSpeed = 1;
 
         [Header("States")]
         public bool run;
@@ -29,6 +31,10 @@ namespace SS
         public bool inAction;
         public bool canMove;
         public bool isTwoHanded;
+        
+
+        [Header("Other")]
+        public EnemyTarget lockOnTarget;
 
         [HideInInspector]
         public Animator anim;
@@ -93,7 +99,7 @@ namespace SS
                 _actionDelay += delta;
                 if (_actionDelay > 1)
                 { 
-                    inAction = false;
+                     //inAction = false;
                     _actionDelay = 0;
                 }
                 else
@@ -101,13 +107,17 @@ namespace SS
                     return;
                 } 
             }
-            // remove above inAction = false;
-            //inAction = !anim.GetBool("can_move");
+            // remove above inAction = false; or comment below inAction
+            inAction = !anim.GetBool("can_move");
             canMove = anim.GetBool("can_move");
             if (!canMove)
                 return;
-            anim.applyRootMotion = false;
 
+            a_hook.rm_multi = 1;
+            HandleRolls();
+
+
+            anim.applyRootMotion = false;
             rigid.drag = (moveAmount > 0 || onGround == false) ? 0 : 4;         
             float targetSpeed = moveSpeed;
             if (run)
@@ -119,22 +129,27 @@ namespace SS
             if (run)
                 lockOn = false;
 
-            if(!lockOn)
-            {
-                Vector3 targetDir = moveDir;
-                targetDir.y = 0;
-                if (targetDir == Vector3.zero)
-                    targetDir = transform.forward;
-                Quaternion tr = Quaternion.LookRotation(targetDir);
-                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, delta * moveAmount * rotateSpeed);
-                transform.rotation = targetRotation;
-            }
-            HandleMovementAnimations();
+            Vector3 targetDir = (lockOn == false) ? moveDir : lockOnTarget.transform.position - transform.position;
+            targetDir.y = 0;
+            if (targetDir == Vector3.zero)
+                targetDir = transform.forward;
+            Quaternion tr = Quaternion.LookRotation(targetDir);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, delta * moveAmount * rotateSpeed);
+            transform.rotation = targetRotation;
+
+
+            anim.SetBool("lockon", lockOn);
+            if (lockOn == false)
+                HandleMovementAnimations();
+            else
+                HandleLockOnAnimations(moveDir);
         }
 
         public void DetectAction()
         {
             if (canMove == false)
+                return;
+            if (onGround == false)
                 return;
 
             if (rb == false && rt == false && lt == false && lb == false)
@@ -162,11 +177,62 @@ namespace SS
             onGround = OnGround();
             anim.SetBool("onGround", onGround);
         }
+        
+        void HandleRolls()
+        {
+            if (!rollInput)
+                return;
+            if (!onGround)
+                return;
+
+            float v = vertical;
+            float h = horizontal;
+            v = (moveAmount > 0.3f) ? 1 : 0;
+            h = 0;
+
+            /* if(lockOn == false)
+             {
+                 v = (moveAmount > 0.3f) ? 1 : 0;
+                 h = 0;
+             } else
+             {
+                 if (Mathf.Abs(v) < 0.3f)
+                     v = 0;
+                 if (Mathf.Abs(h) < 0.3f)
+                     h = 0;
+             }*/
+
+            a_hook.rm_multi = rollSpeed;
+
+            if (v != 0)
+            {
+                if (moveDir == Vector3.zero)
+                    moveDir = transform.forward;
+                Quaternion targetRot = Quaternion.LookRotation(moveDir);
+                transform.rotation = targetRot;
+            }
+            anim.SetFloat("vertical", v);
+            anim.SetFloat("horizontal", h);
+
+            canMove = false;
+            inAction = true;
+            anim.CrossFade("Rolls", 0.5f);
+        }
 
         void HandleMovementAnimations()
         {
             anim.SetBool("run", run);
             anim.SetFloat("vertical", moveAmount, 0.4f, delta);
+        }
+
+        void HandleLockOnAnimations(Vector3 moveDir)
+        {
+            Vector3 relativeDir = transform.InverseTransformDirection(moveDir);
+            float h = relativeDir.x;
+            float v = relativeDir.z;
+
+            anim.SetFloat("vertical", v, 0.2f, delta);
+            anim.SetFloat("horizontal", h, 0.2f, delta);
         }
 
         public bool OnGround()

@@ -21,6 +21,9 @@ namespace SS
         float lt_axis;
         bool lt_input;
 
+        bool leftAxis_down;
+        bool rightAxis_down;
+
         StateManager states;
         CameraManager camManager;
 
@@ -71,6 +74,7 @@ namespace SS
                 lt_input = true;
             rb_input = Input.GetButton("RB");
             lb_input = Input.GetButton("LB");
+            rightAxis_down = Input.GetButtonUp("L");
         }
 
         void UpdateStates()
@@ -84,13 +88,15 @@ namespace SS
             float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
             states.moveAmount = Mathf.Clamp01(m);
 
+            states.rollInput = b_input;
+
             if (b_input)
             {
-                states.run = (states.moveAmount > 0);
+                //states.run = (states.moveAmount > 0);
             }
             else
             {
-                states.run = false;
+                //states.run = false;
             }
 
             states.rt = rt_input;
@@ -102,6 +108,15 @@ namespace SS
             {
                 states.isTwoHanded = !states.isTwoHanded;
                 states.HandleTwoHanded();
+            }
+            if(rightAxis_down)
+            {
+                states.lockOn = !states.lockOn;
+                if (states.lockOnTarget == null)
+                    states.lockOn = false;
+
+                camManager.lockonTarget = states.lockOnTarget.transform;
+                camManager.lockon = states.lockOn;
             }
         }
     }
