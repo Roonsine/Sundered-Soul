@@ -12,12 +12,14 @@ namespace SS
         public float controllerSpeed = 7;
 
         public Transform target;
-        public Transform lockonTarget;
+        public EnemyTarget lockonTarget;
+        public Transform lockonTransform;
 
         [HideInInspector]
         public Transform pivot;
         [HideInInspector]
         public Transform camTrans;
+        StateManager states;
 
         float turnSmoothing = .1f;
         public float minAngle = -35;
@@ -30,8 +32,11 @@ namespace SS
         public float lookAngle;
         public float tiltAngle;
 
-        public void Init(Transform t) {
-            target = t;
+        bool usedRightAxis;
+
+        public void Init(StateManager st) {
+            states = st;
+            target = st.transform;
 
             camTrans = Camera.main.transform;
             pivot = camTrans.parent;
@@ -45,6 +50,28 @@ namespace SS
             float c_v = Input.GetAxis("RightAxis Y");
 
             float targetSpeed = mouseSpeed;
+
+            if(lockonTarget != null){
+
+            if(lockonTransform == null){
+                lockonTransform = lockonTarget.GetTarget();
+                states.lockOnTransform = lockonTransform;
+                }
+                if(Mathf.Abs(c_h) > 0.6f) {
+                    if(!usedRightAxis) {
+                        lockonTransform = lockonTarget.GetTarget((c_h > 0));
+                        states.lockOnTransform =  lockonTransform;
+                        usedRightAxis = true;
+                    }
+                }   
+            }
+
+            if(usedRightAxis) {
+                if(Mathf.Abs(c_h) < 0.6f){
+                  usedRightAxis = false;  
+                }
+            }
+
             if(c_h != 0 || c_v != 0)
             {
                 h = c_h;
@@ -80,9 +107,10 @@ namespace SS
 
             if (lockon && lockonTarget != null)
             {
-                Vector3 targetDir = lockonTarget.position - transform.position;
+                Vector3 targetDir = lockonTransform.position - transform.position;
                 targetDir.Normalize();
                 //targetDir.y = 0;
+                
 
                 if (targetDir == Vector3.zero)
                     targetDir = transform.forward;

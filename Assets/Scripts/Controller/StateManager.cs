@@ -35,6 +35,8 @@ namespace SS
 
         [Header("Other")]
         public EnemyTarget lockOnTarget;
+        public Transform lockOnTransform;
+        public AnimationCurve roll_curve;
 
         [HideInInspector]
         public Animator anim;
@@ -99,7 +101,7 @@ namespace SS
                 _actionDelay += delta;
                 if (_actionDelay > 1)
                 { 
-                     //inAction = false;
+                     inAction = false;
                     _actionDelay = 0;
                 }
                 else
@@ -108,12 +110,13 @@ namespace SS
                 } 
             }
             // remove above inAction = false; or comment below inAction
-            inAction = !anim.GetBool("can_move");
+            //inAction = !anim.GetBool("can_move");
             canMove = anim.GetBool("can_move");
             if (!canMove)
                 return;
 
-            a_hook.rm_multi = 1;
+            //a_hook.rm_multi = 1;
+            a_hook.CloseRoll();
             HandleRolls();
 
 
@@ -129,7 +132,13 @@ namespace SS
             if (run)
                 lockOn = false;
 
-            Vector3 targetDir = (lockOn == false) ? moveDir : lockOnTarget.transform.position - transform.position;
+            Vector3 targetDir = (lockOn == false) ? 
+                moveDir 
+                : 
+                (lockOnTransform != null ) ? 
+                    lockOnTransform.transform.position - transform.position 
+                    : 
+                    moveDir;
             targetDir.y = 0;
             if (targetDir == Vector3.zero)
                 targetDir = transform.forward;
@@ -202,7 +211,7 @@ namespace SS
                      h = 0;
              }*/
 
-            a_hook.rm_multi = rollSpeed;
+
 
             if (v != 0)
             {
@@ -210,6 +219,10 @@ namespace SS
                     moveDir = transform.forward;
                 Quaternion targetRot = Quaternion.LookRotation(moveDir);
                 transform.rotation = targetRot;
+                a_hook.InitForRoll();
+                a_hook.rm_multi = rollSpeed;
+            } else {
+                a_hook.rm_multi = 1.3f;
             }
             anim.SetFloat("vertical", v);
             anim.SetFloat("horizontal", h);
@@ -217,6 +230,7 @@ namespace SS
             canMove = false;
             inAction = true;
             anim.CrossFade("Rolls", 0.5f);
+
         }
 
         void HandleMovementAnimations()
@@ -243,7 +257,6 @@ namespace SS
             Vector3 dir = -Vector3.up;
             float dis = toGround + 0.3f;
             RaycastHit hit;
-            Debug.DrawRay(origin, dir * dis);
             if(Physics.Raycast(origin, dir, out hit, dis, ignoreLayers))
             {
                 r = true;

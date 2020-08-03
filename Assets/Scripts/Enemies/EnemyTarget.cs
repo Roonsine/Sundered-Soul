@@ -6,16 +6,46 @@ namespace SS
 {
     public class EnemyTarget : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public int index;
+        public List<Transform> targets = new List<Transform>();
+        public List<HumanBodyBones> humanBodyBones = new List<HumanBodyBones>();
+        Animator anim;
 
+        void Start() {
+            anim = GetComponent<Animator>();
+            if(anim.isHuman == false)
+            return;
+
+            for (int i = 0; i < humanBodyBones.Count; i++)
+            {
+                targets.Add(anim.GetBoneTransform(humanBodyBones[i]));
+            }
         }
 
-        // Update is called once per frame
-        void Update()
+        public Transform GetTarget(bool negative = false) 
         {
+            if(targets.Count == 0)
+                return transform;
 
+            if(negative == false)
+            {
+                if(index < targets.Count - 1)
+                    index++;
+             else 
+                index = 0;
+                                
+            } 
+            else
+            {
+                if(index < 0) 
+                    index = targets.Count - 1;
+                 else 
+                    index--;
+            }
+            index = Mathf.Clamp(index, 0, targets.Count);
+            return targets[index];
         }
+
+
     }
 }
