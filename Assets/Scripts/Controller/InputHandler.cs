@@ -24,6 +24,10 @@ namespace SS
         bool leftAxis_down;
         bool rightAxis_down;
 
+        float b_timer;
+        float rt_timer;
+        float lt_timer;
+
         StateManager states;
         CameraManager camManager;
 
@@ -44,7 +48,6 @@ namespace SS
             delta = Time.fixedDeltaTime;
             GetInput();
             UpdateStates();
-
             states.FixedTick(delta);
             camManager.Tick(delta);
         }
@@ -52,6 +55,7 @@ namespace SS
         void Update() {
             delta = Time.deltaTime;
             states.Tick(delta);
+            ResetInputsNStates();
         }
 
         void GetInput()
@@ -75,6 +79,9 @@ namespace SS
             rb_input = Input.GetButton("RB");
             lb_input = Input.GetButton("LB");
             rightAxis_down = Input.GetButtonUp("L");
+
+            if(b_input)
+                b_timer += delta;
         }
 
         void UpdateStates()
@@ -88,16 +95,16 @@ namespace SS
             float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
             states.moveAmount = Mathf.Clamp01(m);
 
-            states.rollInput = b_input;
 
-            if (b_input)
+
+            if (b_input && b_timer > 0.5f)
             {
-                //states.run = (states.moveAmount > 0);
+                states.run = (states.moveAmount > 0);
             }
-            else
-            {
-                //states.run = false;
-            }
+
+            if(b_input == false && b_timer > 0 && b_timer < 0.5f)
+                states.rollInput = true;
+
 
             states.rt = rt_input;
             states.lt = lt_input;
@@ -118,7 +125,18 @@ namespace SS
                 camManager.lockonTarget = states.lockOnTarget;
                 states.lockOnTransform = camManager.lockonTransform;
                 camManager.lockon = states.lockOn;
-            }
+            }   
+        }
+
+        void ResetInputsNStates() {
+            if(b_input == false)
+                b_timer = 0;
+            
+            if(states.rollInput)
+                states.rollInput = false;
+
+            if(states.run)
+                states.run = false;
         }
     }
 }

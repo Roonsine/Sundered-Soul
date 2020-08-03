@@ -1641,9 +1641,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.48714757
-  m_TransitionOffset: 0
-  m_ExitTime: 0.64332366
+  m_TransitionDuration: 0.6762798
+  m_TransitionOffset: 0.0000001192093
+  m_ExitTime: 0.5105991
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1897,7 +1897,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0.6380596
   m_TransitionOffset: 0
-  m_ExitTime: 0.73805207
+  m_ExitTime: 0.5814725
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2058,9 +2058,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.32890427
   m_TransitionOffset: 0
-  m_ExitTime: 0.8455378
+  m_ExitTime: 0.7342531
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -3312,7 +3312,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: parry
-  m_Speed: 1
+  m_Speed: 1.3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101746611127146350}
@@ -3607,7 +3607,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Rolls
-  m_Speed: 1
+  m_Speed: 1.3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101963983713184632}
@@ -3838,7 +3838,7 @@ AnimatorStateMachine:
     m_Position: {x: 444, y: -276, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102908232441495620}
-    m_Position: {x: 228, y: -624, z: 0}
+    m_Position: {x: 230, y: -630, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102790490523961378}
     m_Position: {x: 230, y: -580, z: 0}
@@ -3850,7 +3850,7 @@ AnimatorStateMachine:
     m_Position: {x: 24, y: 12, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102726522705156146}
-    m_Position: {x: 12, y: -72, z: 0}
+    m_Position: {x: 10, y: -70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102440114495417076}
     m_Position: {x: 756, y: -144, z: 0}
