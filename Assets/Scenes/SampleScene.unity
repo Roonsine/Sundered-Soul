@@ -109191,6 +109191,7 @@ GameObject:
   - component: {fileID: 1970340336}
   - component: {fileID: 1970340340}
   - component: {fileID: 1970340341}
+  - component: {fileID: 1970340342}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -109327,6 +109328,7 @@ MonoBehaviour:
   rigid: {fileID: 0}
   a_hook: {fileID: 0}
   actionManager: {fileID: 0}
+  inventoryManager: {fileID: 0}
   delta: 0
   ignoreLayers:
     serializedVersion: 2
@@ -109345,13 +109347,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionSlots:
   - input: 0
-    targetAnim: oh_attack_1
+    targetAnim: 
   - input: 1
     targetAnim: 
   - input: 2
-    targetAnim: oh_attack_2
+    targetAnim: 
   - input: 3
-    targetAnim: parry
+    targetAnim: 
+--- !u!114 &1970340342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970340335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96d456ed33698e74eb1a0007a9015f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curWeapon:
+    actions:
+    - input: 0
+      targetAnim: oh_attack_1
+    - input: 1
+      targetAnim: 
+    - input: 2
+      targetAnim: oh_attack_2
+    - input: 3
+      targetAnim: parry
+    two_handedActions:
+    - input: 0
+      targetAnim: th_attack_1
+    - input: 1
+      targetAnim: th_attack_2
+    - input: 2
+      targetAnim: 
+    - input: 3
+      targetAnim: 
 --- !u!1 &1972140376
 GameObject:
   m_ObjectHideFlags: 0
