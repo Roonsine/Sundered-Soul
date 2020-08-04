@@ -95,7 +95,8 @@ namespace SS
             float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
             states.moveAmount = Mathf.Clamp01(m);
 
-
+            if(x_input)
+                b_input = false;
 
             if (b_input && b_timer > 0.5f)
             {
@@ -105,7 +106,7 @@ namespace SS
             if(b_input == false && b_timer > 0 && b_timer < 0.5f)
                 states.rollInput = true;
 
-
+            states.itemInput = x_input;
             states.rt = rt_input;
             states.lt = lt_input;
             states.rb = rb_input;

@@ -16,6 +16,7 @@ namespace SS
         public Vector3 moveDir;
         public bool rt, rb, lt, lb;
         public bool rollInput;
+        public bool itemInput;
 
         [Header("stats")]
         public float moveSpeed = 2;
@@ -31,6 +32,7 @@ namespace SS
         public bool inAction;
         public bool canMove;
         public bool isTwoHanded;
+        public bool usingItem;
         
 
         [Header("Other")]
@@ -102,7 +104,14 @@ namespace SS
         public void FixedTick(float d)
         {
             delta = d;
+
+            usingItem = anim.GetBool("interacting");
+
+
+
+            DetectItemAction();
             DetectAction();
+            inventoryManager.curWeapon.weaponModel.SetActive(!usingItem);
 
             if (inAction)
             {
@@ -119,8 +128,6 @@ namespace SS
                     return;
                 } 
             }
-            // remove above inAction = false; or comment below inAction
-            //inAction = !anim.GetBool("can_move");
             canMove = anim.GetBool("can_move");
             if (!canMove)
                 return;
@@ -132,7 +139,14 @@ namespace SS
 
             anim.applyRootMotion = false;
             rigid.drag = (moveAmount > 0 || onGround == false) ? 0 : 4;         
+
             float targetSpeed = moveSpeed;
+
+            if(usingItem) {
+                run = false;
+                moveAmount = Mathf.Clamp(moveAmount, 0, 0.3f);
+            }
+
             if (run)
                 targetSpeed = runSpeed;
 
@@ -164,9 +178,25 @@ namespace SS
                 HandleLockOnAnimations(moveDir);
         }
 
+        public void DetectItemAction() {
+            if(canMove == false || usingItem)
+                return;
+            
+            if(itemInput == false)
+                return;
+            
+            ItemAction slot = actionManager.consumableItem;
+            string targetAnim = slot.targetAnim;
+            if(string.IsNullOrEmpty(targetAnim))
+                return;
+            
+            usingItem = true;
+            anim.Play(targetAnim);
+        }
+
         public void DetectAction()
         {
-            if (canMove == false)
+            if (canMove == false || usingItem)
                 return;
             if (onGround == false)
                 return;
@@ -184,7 +214,7 @@ namespace SS
                 return;
 
             inAction = true;
-            anim.CrossFade(targetAnim, 0.2f);
+            anim.Play(targetAnim);
             //rigid.velocity = Vector3.zero;
         }
 
@@ -197,9 +227,7 @@ namespace SS
         
         void HandleRolls()
         {
-            if (!rollInput)
-                return;
-            if (!onGround)
+            if (!rollInput || usingItem || !onGround)
                 return;
 
             float v = vertical;
@@ -237,7 +265,7 @@ namespace SS
 
             canMove = false;
             inAction = true;
-            anim.CrossFade("Rolls", 0.5f);
+            anim.Play("Rolls");
 
         }
 
