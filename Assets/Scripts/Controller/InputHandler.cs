@@ -117,12 +117,23 @@ namespace SS
                 states.isTwoHanded = !states.isTwoHanded;
                 states.HandleTwoHanded();
             }
+
+            if(states.lockOnTarget != null){
+                if(states.lockOnTarget.enemyStates.isDead) {
+                    states.lockOn = false;
+                    states.lockOnTarget = null;
+                    states.lockOnTransform = null;
+                    camManager.lockon = false;
+                    camManager.lockonTarget = null;
+                }
+            }
+
             if(rightAxis_down)
             {
                 states.lockOn = !states.lockOn;
                 if (states.lockOnTarget == null)
                     states.lockOn = false;
-
+               
                 camManager.lockonTarget = states.lockOnTarget;
                 states.lockOnTransform = camManager.lockonTransform;
                 camManager.lockon = states.lockOn;

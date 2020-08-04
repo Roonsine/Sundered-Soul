@@ -73,7 +73,9 @@ namespace SS
             actionManager.Init(this);
 
             a_hook = activeModel.AddComponent<AnimatorHook>();
-            a_hook.Init(this);
+            if(a_hook == null)
+                a_hook = activeModel.AddComponent<AnimatorHook>();
+            a_hook.Init(this, null);
 
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);

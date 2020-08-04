@@ -9,10 +9,14 @@ namespace SS
         public int index;
         public List<Transform> targets = new List<Transform>();
         public List<HumanBodyBones> humanBodyBones = new List<HumanBodyBones>();
+
+        public EnemyStates enemyStates;
+
         Animator anim;
 
-        void Start() {
-            anim = GetComponent<Animator>();
+        public void Init(EnemyStates st) {
+            enemyStates = st;
+            anim = enemyStates.anim;
             if(anim.isHuman == false)
             return;
 

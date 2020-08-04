@@ -51,7 +51,10 @@
      <Compile Include="Assets\Scripts\Controller\InputHandler.cs" />
      <Compile Include="Assets\Scripts\Controller\InventoryManager.cs" />
      <Compile Include="Assets\Scripts\Controller\StateManager.cs" />
+     <Compile Include="Assets\Scripts\Enemies\EnemyStates.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyTarget.cs" />
+     <Compile Include="Assets\Scripts\Items\DamageCollider.cs" />
+     <Compile Include="Assets\Scripts\Items\WeaponHook.cs" />
      <Compile Include="Assets\Scripts\Utilities\Helper.cs" />
      <Compile Include="Assets\Scripts\Utilities\KeepBool.cs" />
  <Reference Include="UnityEngine">
