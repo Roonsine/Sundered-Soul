@@ -67,7 +67,7 @@ namespace SS
             rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
             inventoryManager = GetComponent<InventoryManager>();
-            inventoryManager.Init();
+            inventoryManager.Init(this);
 
             actionManager = GetComponent<ActionManager>();
             actionManager.Init(this);
@@ -113,7 +113,7 @@ namespace SS
 
             DetectItemAction();
             DetectAction();
-            inventoryManager.curWeapon.weaponModel.SetActive(!usingItem);
+            inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
 
             if (inAction)
             {
@@ -146,7 +146,7 @@ namespace SS
 
             if(usingItem) {
                 run = false;
-                moveAmount = Mathf.Clamp(moveAmount, 0, 0.3f);
+                moveAmount = Mathf.Clamp(moveAmount, 0, 0.4f);
             }
 
             if (run)
@@ -215,7 +215,9 @@ namespace SS
             if (string.IsNullOrEmpty(targetAnim))
                 return;
 
+            canMove = false;
             inAction = true;
+            anim.SetBool("mirror", slot.mirror);
             anim.Play(targetAnim);
             //rigid.velocity = Vector3.zero;
         }
