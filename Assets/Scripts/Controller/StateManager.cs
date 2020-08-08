@@ -24,6 +24,7 @@ namespace SS
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
         public float rollSpeed = 1;
+        public float riposteOffset = 1.4f;
 
         [Header("States")]
         public bool run;
@@ -33,6 +34,8 @@ namespace SS
         public bool canMove;
         public bool isTwoHanded;
         public bool usingItem;
+        public bool canBeParried;
+        public bool parryable;
         public bool isBlocking;
         public bool isLeftHand;
         
@@ -41,6 +44,7 @@ namespace SS
         public EnemyTarget lockOnTarget;
         public Transform lockOnTransform;
         public AnimationCurve roll_curve;
+        public EnemyStates parryTarget;
 
         [HideInInspector]
         public Animator anim;
@@ -232,6 +236,9 @@ namespace SS
         }
 
         void AttackAction(Action slot) {
+            if(CheckForParry(slot))
+                return;
+
             string targetAnim = null;
             targetAnim = slot.targetAnim;
 
@@ -240,8 +247,52 @@ namespace SS
 
             canMove = false;
             inAction = true;
+            float  targetSpeed = 1;
+            if(slot.changeSpeed) {
+                targetSpeed = slot.animSpeed;
+                if(targetSpeed == 0)
+                    targetSpeed = 1;
+            }
+            anim.SetFloat("animSpeed", targetSpeed);
             anim.SetBool("mirror", slot.mirror);
             anim.Play(targetAnim);
+        }
+
+        bool CheckForParry(Action slot) {
+            if(parryTarget == null)
+                return false;
+            
+            float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
+
+            if( dis > 3) {
+                return false;
+            }
+            
+            Vector3 dir = parryTarget.transform.position - transform.position;
+            dir.Normalize();
+            dir.y = 0;
+            float angle = Vector3.Angle(transform.forward, dir);
+
+            if(angle < 60) {
+                Vector3 targetPosition = -dir * riposteOffset;
+                targetPosition += parryTarget.transform.position;
+                transform.position = targetPosition;
+                
+                if(dir == Vector3.zero) 
+                    dir = -parryTarget.transform.forward;
+                Quaternion eRotation = Quaternion.LookRotation(-dir);
+                Quaternion playerRot = Quaternion.LookRotation(dir);
+
+                parryTarget.transform.rotation = eRotation;
+                transform.rotation = playerRot;
+                parryTarget.BeingRiposted();
+                canMove = false;
+                inAction = true;
+                anim.SetBool("mirror", slot.mirror);
+                anim.Play("parry_attack");
+                return true;
+            }
+            return false;
         }
 
         void BlockAction(Action slot) {
@@ -256,6 +307,16 @@ namespace SS
             if (string.IsNullOrEmpty(targetAnim))
                 return;
 
+            float  targetSpeed = 1;
+            if(slot.changeSpeed) {
+                targetSpeed = slot.animSpeed;
+                if(targetSpeed == 0)
+                    targetSpeed = 1;
+            }
+
+            anim.SetFloat("animSpeed", targetSpeed);
+            
+            canBeParried = slot.canBeParried;
             canMove = false;
             inAction = true;
             anim.SetBool("mirror", slot.mirror);
@@ -355,6 +416,10 @@ namespace SS
                 actionManager.UpdateActionsTwoHanded();
             else
                 actionManager.UpdateActionsOneHanded();
+        }
+
+        public void BeingRiposted() {
+
         }
     }
 }

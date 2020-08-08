@@ -6,9 +6,15 @@ namespace SS {
     public class EnemyStates : MonoBehaviour
     {
         public float health;
+        public bool canBeParried = true;
+        // change the var name below
+        public bool parryable = true;
         public bool isInvincible;
+        public bool dontDoAnything;
         public bool canMove;
         public bool isDead;
+
+        StateManager parriedBy;
 
         public Animator anim;
         EnemyTarget enemyTarget;
@@ -18,6 +24,8 @@ namespace SS {
 
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
         List<Collider> ragdollColliders = new List<Collider>();
+
+        float timer;
 
         void Start(){
             health = 100;
@@ -33,6 +41,7 @@ namespace SS {
             a_hook.Init(null,this);
 
             InitRagdoll();
+            parryable = false;
         }
         
         void InitRagdoll() {
@@ -75,6 +84,10 @@ namespace SS {
         void Update(){
             delta = Time.deltaTime;
             canMove = anim.GetBool("can_move");
+            if(dontDoAnything){
+                dontDoAnything = !canMove;
+                return;
+            }
             if(health <=0){
                 if(!isDead) {
                     isDead = true;
@@ -84,9 +97,29 @@ namespace SS {
             if(isInvincible){
                 isInvincible = !canMove;
             }
-            if(canMove){
-                anim.applyRootMotion = false;
+            
+            if(parriedBy != null && parryable == false) {
+                parriedBy.parryTarget = null;
+                parriedBy = null;
             }
+
+            if(canMove){
+                parryable = false;
+                anim.applyRootMotion = false;
+
+                //Debug
+                timer += Time.deltaTime;
+                if(timer > 3){
+                    DoAction();
+                    timer = 0;
+                }
+            }
+        }
+
+        void DoAction(){
+            anim.Play("oh_attack_1");
+            anim.applyRootMotion = true;
+            anim.SetBool("can_move", false);
         }
 
         public void DoDamage(float v){
@@ -98,6 +131,32 @@ namespace SS {
             anim.Play("hit1");
             anim.applyRootMotion = true;
             anim.SetBool("can_move", false);
+        }
+
+        public void CheckForParry(Transform target, StateManager states){
+            if(canBeParried == false || parryable == false || isInvincible)
+                return;
+            
+            Vector3 dir = transform.position - target.position;
+            dir.Normalize();
+            float dot = Vector3.Dot(target.forward, dir);
+            if(dot < 0)
+                return;
+
+
+            isInvincible = true;
+            anim.Play("attack_interrupt");
+            anim.applyRootMotion = true;
+            anim.SetBool("can_move", false);
+            states.parryTarget = this;
+            parriedBy = states;
+        }
+
+        public void BeingRiposted() {
+            health -= 500;
+            dontDoAnything = true;
+            anim.SetBool("can_move", false);
+            anim.Play("parry_recieved");
         }
     }
 }

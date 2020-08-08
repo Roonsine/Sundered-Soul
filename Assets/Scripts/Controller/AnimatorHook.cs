@@ -101,17 +101,49 @@ namespace SS
         }
 
         public void OpenDamageColliders() {
-            if(states == null)
-                return;
-
-            states.inventoryManager.OpenAllDamageColiders();
+            if(states){
+                states.inventoryManager.OpenAllDamageColiders();
+            }
+            OpenParryFlag();
         }
 
         public void CloseDamageColliders(){
+            if(states){
+                states.inventoryManager.CloseAllDamageColliders();
+            }
+            CloseParryFlag();
+        }
+
+        public void OpenParryCollider(){
             if(states == null)
                 return;
+            
+            states.inventoryManager.OpenParryCollider();
+        }
 
-            states.inventoryManager.CloseAllDamageColliders();
+        public void CloseParryCollider() {
+            if(states == null)
+                return;
+            
+            states.inventoryManager.CloseParryCollider();
+        }
+
+        public void OpenParryFlag() {
+            if(states){
+                states.parryable = true;
+            }
+            if(enemyStates) {
+                enemyStates.parryable = true;
+            }
+        }
+
+        public void CloseParryFlag() {
+            if(states){
+                states.parryable = false;
+            }
+            if(enemyStates){
+                enemyStates.parryable = false;
+            }
         }
     }
 }

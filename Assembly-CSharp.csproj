@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\Enemies\EnemyStates.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyTarget.cs" />
      <Compile Include="Assets\Scripts\Items\DamageCollider.cs" />
+     <Compile Include="Assets\Scripts\Items\ParryCollider.cs" />
      <Compile Include="Assets\Scripts\Items\WeaponHook.cs" />
      <Compile Include="Assets\Scripts\Utilities\Helper.cs" />
      <Compile Include="Assets\Scripts\Utilities\KeepBool.cs" />
