@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\Items\WeaponHook.cs" />
      <Compile Include="Assets\Scripts\Utilities\Helper.cs" />
      <Compile Include="Assets\Scripts\Utilities\KeepBool.cs" />
+     <Compile Include="Assets\Utilities\IconMaker\IconMaker.cs" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
