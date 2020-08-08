@@ -24,7 +24,7 @@ namespace SS
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
         public float rollSpeed = 1;
-        public float riposteOffset = 1.4f;
+        public float critAtkOffset = 1.4f;
 
         [Header("States")]
         public bool run;
@@ -44,7 +44,6 @@ namespace SS
         public EnemyTarget lockOnTarget;
         public Transform lockOnTransform;
         public AnimationCurve roll_curve;
-        public EnemyStates parryTarget;
 
         [HideInInspector]
         public Animator anim;
@@ -238,6 +237,8 @@ namespace SS
         void AttackAction(Action slot) {
             if(CheckForParry(slot))
                 return;
+            if(CheckForBackStab(slot))
+                return;
 
             string targetAnim = null;
             targetAnim = slot.targetAnim;
@@ -259,14 +260,26 @@ namespace SS
         }
 
         bool CheckForParry(Action slot) {
+            EnemyStates parryTarget = null;
+            Vector3 origin = transform.position;
+            origin.y += 1;
+            Vector3 rayDir = transform.forward;
+            RaycastHit hit;
+            if(Physics.Raycast(origin, rayDir, out hit, 3, ignoreLayers)){
+                parryTarget = hit.transform.GetComponentInParent<EnemyStates>();
+            }
+
             if(parryTarget == null)
                 return false;
-            
-            float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
 
-            if( dis > 3) {
+            if(parryTarget.parriedBy == null)
                 return false;
-            }
+            
+            // float dis = Vector3.Distance(parryTarget.transform.position, transform.position);
+
+            // if( dis > 3) {
+            //     return false;
+            // }
             
             Vector3 dir = parryTarget.transform.position - transform.position;
             dir.Normalize();
@@ -274,7 +287,7 @@ namespace SS
             float angle = Vector3.Angle(transform.forward, dir);
 
             if(angle < 60) {
-                Vector3 targetPosition = -dir * riposteOffset;
+                Vector3 targetPosition = -dir * critAtkOffset;
                 targetPosition += parryTarget.transform.position;
                 transform.position = targetPosition;
                 
@@ -286,6 +299,43 @@ namespace SS
                 parryTarget.transform.rotation = eRotation;
                 transform.rotation = playerRot;
                 parryTarget.BeingRiposted();
+                canMove = false;
+                inAction = true;
+                anim.SetBool("mirror", slot.mirror);
+                anim.Play("parry_attack");
+                return true;
+            }
+            return false;
+        }
+
+        bool CheckForBackStab(Action slot) {
+            if(slot.canBackstab == false)
+                return false;
+            EnemyStates backstabTarget = null;
+            Vector3 origin = transform.position;
+            origin.y += 1;
+            Vector3 rayDir = transform.forward;
+            RaycastHit hit;
+            if(Physics.Raycast(origin, rayDir, out hit, 1, ignoreLayers)) {
+                backstabTarget = hit.transform.GetComponentInParent<EnemyStates>();
+            }
+
+            if(backstabTarget == null)
+                return false;
+            
+            Vector3 dir = transform.position - backstabTarget.transform.position;
+            dir.Normalize();
+            dir.y = 0;
+            float angle =  Vector3.Angle(backstabTarget.transform.forward, dir);
+
+            if(angle > 150) {
+                Vector3 targetPosition = dir * critAtkOffset;
+                targetPosition += backstabTarget.transform.position;
+                transform.position = targetPosition;
+
+
+                backstabTarget.transform.rotation = transform.rotation;
+                backstabTarget.BeingBackstabbed();
                 canMove = false;
                 inAction = true;
                 anim.SetBool("mirror", slot.mirror);

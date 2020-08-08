@@ -22,59 +22,33 @@ namespace SS
         public void UpdateActionsOneHanded(){
             EmptyAllSlots();
 
-            if(states.inventoryManager.hasLeftHandWeapon){                
-                UpdateActionsLeftHand();
-                return;
-            }
-            Weapon w = states.inventoryManager.rightHandWeapon;
-            for (int i = 0; i < w.actions.Count; i++)
-            {
-                Action a = GetAction(w.actions[i].input);
-                a.targetAnim = w.actions[i].targetAnim;
+            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rb, ActionInput.rb);
+            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rt, ActionInput.rt);
+
+            if(states.inventoryManager.hasLeftHandWeapon){
+                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rb, ActionInput.lb, true);
+                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rt, ActionInput.lt, true);
+            } else {
+                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lb, ActionInput.lb);
+                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lt, ActionInput.lt);
             }
         }
 
-        public void UpdateActionsLeftHand(){
-            Weapon r_w = states.inventoryManager.rightHandWeapon;
-            Weapon l_w = states.inventoryManager.leftHandWeapon;
+        public void DeepCopyAction(Weapon w, ActionInput input, ActionInput assign, bool isLeftHand = false) {
+            Action a = GetAction(assign);
+            Action w_a = w.GetAction(w.actions, input);
+            if(w_a == null)
+                return;
 
-            Action rb = GetAction(ActionInput.rb);
-            Action rt = GetAction(ActionInput.rt);
+            a.targetAnim = w_a.targetAnim;
+            a.type = w_a.type;
+            a.canBeParried = w_a.canBeParried;
+            a.changeSpeed = w_a.changeSpeed;
+            a.animSpeed = w_a.animSpeed;
+            a.canBackstab = w_a.canBackstab;
 
-            Action w_rb = r_w.GetAction(r_w.actions, ActionInput.rb);
-            rb.targetAnim = w_rb.targetAnim;
-            rb.type = w_rb.type;
-            rb.canBeParried = w_rb.canBeParried;
-            rt.changeSpeed = w_rb.changeSpeed;
-            rb.animSpeed = w_rb.animSpeed;
-
-            Action w_rt = r_w.GetAction(r_w.actions, ActionInput.rt);
-            rt.targetAnim = w_rt.targetAnim;
-            rt.type = w_rt.type;
-            rt.canBeParried = w_rt.canBeParried;
-            rt.changeSpeed = w_rt.changeSpeed;
-            rt.animSpeed = w_rt.animSpeed;
-
-            Action lb = GetAction(ActionInput.lb);
-            Action lt = GetAction(ActionInput.lt);
-
-            Action w_lb = l_w.GetAction(l_w.actions, ActionInput.rb);
-            lb.targetAnim = w_lb.targetAnim;
-            lb.type = w_lb.type;
-            lb.canBeParried = w_lb.canBeParried;
-            lb.changeSpeed = w_lb.changeSpeed;
-            lb.animSpeed = w_lb.animSpeed;
-
-            Action w_lt = l_w.GetAction(l_w.actions, ActionInput.rt);
-            lt.targetAnim = w_lt.targetAnim;
-            lt.type = w_lt.type;
-            lt.canBeParried = w_lt.canBeParried;
-            lb.changeSpeed = w_lt.changeSpeed;
-            lt.animSpeed = w_lt.animSpeed; 
-
-            if(l_w.leftHandMirror){
-                lb.mirror = true;
-                lt.mirror = true;
+            if(isLeftHand){
+                a.mirror = true;
             }
         }
 
@@ -153,6 +127,7 @@ namespace SS
         public bool canBeParried;
         public bool changeSpeed = false;
         public float animSpeed = 1;
+        public bool canBackstab = false;
     }
 
     [System.Serializable]

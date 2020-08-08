@@ -14,7 +14,7 @@ namespace SS {
         public bool canMove;
         public bool isDead;
 
-        StateManager parriedBy;
+        public StateManager parriedBy;
 
         public Animator anim;
         EnemyTarget enemyTarget;
@@ -99,7 +99,6 @@ namespace SS {
             }
             
             if(parriedBy != null && parryable == false) {
-                parriedBy.parryTarget = null;
                 parriedBy = null;
             }
 
@@ -148,7 +147,6 @@ namespace SS {
             anim.Play("attack_interrupt");
             anim.applyRootMotion = true;
             anim.SetBool("can_move", false);
-            states.parryTarget = this;
             parriedBy = states;
         }
 
@@ -157,6 +155,13 @@ namespace SS {
             dontDoAnything = true;
             anim.SetBool("can_move", false);
             anim.Play("parry_recieved");
+        }
+
+        public void BeingBackstabbed() {
+           // health -= 500;
+            dontDoAnything = true;
+            anim.SetBool("can_move", false);
+            anim.Play("backstabbed");
         }
     }
 }
