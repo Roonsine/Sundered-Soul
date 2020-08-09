@@ -32,6 +32,9 @@ namespace SS
         public float lookAngle;
         public float tiltAngle;
 
+        bool changeTargetLeft;
+        bool changeTargetRight;
+
         bool usedRightAxis;
 
         public void Init(StateManager st) {
@@ -43,13 +46,16 @@ namespace SS
         }
 
         public void Tick(float d) {
-            float h = Input.GetAxis("Mouse X");
-            float v = Input.GetAxis("Mouse Y");
+            float h = Input.GetAxis(StaticStrings.Mouse_X);
+            float v = Input.GetAxis(StaticStrings.Mouse_Y);
 
-            float c_h = Input.GetAxis("RightAxis X");
-            float c_v = Input.GetAxis("RightAxis Y");
+            float c_h = Input.GetAxis(StaticStrings.RightAxis_X);
+            float c_v = Input.GetAxis(StaticStrings.RightAxis_y);
 
             float targetSpeed = mouseSpeed;
+
+            changeTargetLeft = Input.GetKeyUp(KeyCode.V);
+            changeTargetRight = Input.GetKeyUp(KeyCode.B);
 
             if(lockonTarget != null){
 
@@ -64,6 +70,11 @@ namespace SS
                         usedRightAxis = true;
                     }
                 }   
+            }
+
+            if(changeTargetRight || changeTargetLeft) {
+                lockonTransform = lockonTarget.GetTarget(changeTargetLeft);
+                states.lockOnTransform = lockonTransform;
             }
 
             if(usedRightAxis) {

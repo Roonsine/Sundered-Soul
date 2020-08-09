@@ -113,13 +113,13 @@ namespace SS
             delta = d;
 
             isBlocking = false;
-            usingItem = anim.GetBool("interacting");
+            usingItem = anim.GetBool(StaticStrings.interacting);
             DetectAction();
             DetectItemAction();
             inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
 
-            anim.SetBool("blocking", isBlocking);
-            anim.SetBool("isLeft", isLeftHand);
+            anim.SetBool(StaticStrings.blocking, isBlocking);
+            anim.SetBool(StaticStrings.isLeft, isLeftHand);
 
             if (inAction)
             {
@@ -254,8 +254,8 @@ namespace SS
                 if(targetSpeed == 0)
                     targetSpeed = 1;
             }
-            anim.SetFloat("animSpeed", targetSpeed);
-            anim.SetBool("mirror", slot.mirror);
+            anim.SetFloat(StaticStrings.animSpeed, targetSpeed);
+            anim.SetBool(StaticStrings.mirror, slot.mirror);
             anim.Play(targetAnim);
         }
 
@@ -301,8 +301,9 @@ namespace SS
                 parryTarget.BeingRiposted();
                 canMove = false;
                 inAction = true;
-                anim.SetBool("mirror", slot.mirror);
-                anim.Play("parry_attack");
+                anim.SetBool(StaticStrings.mirror, slot.mirror);
+                anim.Play(StaticStrings.parry_attack);
+                lockOnTarget = null;
                 return true;
             }
             return false;
@@ -338,8 +339,9 @@ namespace SS
                 backstabTarget.BeingBackstabbed();
                 canMove = false;
                 inAction = true;
-                anim.SetBool("mirror", slot.mirror);
-                anim.Play("parry_attack");
+                anim.SetBool(StaticStrings.mirror, slot.mirror);
+                anim.Play(StaticStrings.parry_attack);
+                lockOnTarget = null;
                 return true;
             }
             return false;
@@ -364,12 +366,12 @@ namespace SS
                     targetSpeed = 1;
             }
 
-            anim.SetFloat("animSpeed", targetSpeed);
+            anim.SetFloat(StaticStrings.animSpeed, targetSpeed);
             
             canBeParried = slot.canBeParried;
             canMove = false;
             inAction = true;
-            anim.SetBool("mirror", slot.mirror);
+            anim.SetBool(StaticStrings.mirror, slot.mirror);
             anim.Play(targetAnim);
         }
 
@@ -377,7 +379,7 @@ namespace SS
         {
             delta = d;
             onGround = OnGround();
-            anim.SetBool("onGround", onGround);
+            anim.SetBool(StaticStrings.onGround, onGround);
         }
         
         void HandleRolls()
@@ -415,19 +417,19 @@ namespace SS
             } else {
                 a_hook.rm_multi = 1.3f;
             }
-            anim.SetFloat("vertical", v);
-            anim.SetFloat("horizontal", h);
+            anim.SetFloat(StaticStrings.vertical, v);
+            anim.SetFloat(StaticStrings.horizontal, h);
 
             canMove = false;
             inAction = true;
-            anim.Play("Rolls");
+            anim.Play(StaticStrings.Rolls);
 
         }
 
         void HandleMovementAnimations()
         {
-            anim.SetBool("run", run);
-            anim.SetFloat("vertical", moveAmount, 0.4f, delta);
+            anim.SetBool(StaticStrings.run, run);
+            anim.SetFloat(StaticStrings.vertical, moveAmount, 0.4f, delta);
         }
 
         void HandleLockOnAnimations(Vector3 moveDir)
@@ -436,8 +438,8 @@ namespace SS
             float h = relativeDir.x;
             float v = relativeDir.z;
 
-            anim.SetFloat("vertical", v, 0.2f, delta);
-            anim.SetFloat("horizontal", h, 0.2f, delta);
+            anim.SetFloat(StaticStrings.vertical, v, 0.2f, delta);
+            anim.SetFloat(StaticStrings.horizontal, h, 0.2f, delta);
         }
 
         public bool OnGround()
@@ -460,7 +462,7 @@ namespace SS
 
         public void HandleTwoHanded()
         {
-            anim.SetBool("two_handed", isTwoHanded);
+            anim.SetBool(StaticStrings.two_handed, isTwoHanded);
 
             if(isTwoHanded)
                 actionManager.UpdateActionsTwoHanded();
@@ -471,5 +473,6 @@ namespace SS
         public void BeingRiposted() {
 
         }
+
     }
 }

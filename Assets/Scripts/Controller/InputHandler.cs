@@ -61,25 +61,25 @@ namespace SS
 
         void GetInput()
         {
-            vertical = Input.GetAxis("Vertical");
-            horizontal = Input.GetAxis("Horizontal");
-            b_input = Input.GetButton("B");
-            a_input = Input.GetButton("A");
-            y_input = Input.GetButtonUp("Y");
-            x_input = Input.GetButton("X");
-            rt_input = Input.GetButton("RT");
-            rt_axis = Input.GetAxis("RT");
+            vertical = Input.GetAxis(StaticStrings.Vertical);
+            horizontal = Input.GetAxis(StaticStrings.Horizontal);
+            b_input = Input.GetButton(StaticStrings.B);
+            a_input = Input.GetButton(StaticStrings.A);
+            y_input = Input.GetButtonUp(StaticStrings.Y);
+            x_input = Input.GetButton(StaticStrings.X);
+            rt_input = Input.GetButton(StaticStrings.RT);
+            rt_axis = Input.GetAxis(StaticStrings.RT);
             // change to != 0 for hair trigger
             if (rt_axis == -1)
                 rt_input = true;
 
-            lt_input = Input.GetButton("LT");
-            lt_axis = Input.GetAxis("LT");
+            lt_input = Input.GetButton(StaticStrings.LT);
+            lt_axis = Input.GetAxis(StaticStrings.LT);
             if (lt_axis == -1)
                 lt_input = true;
-            rb_input = Input.GetButton("RB");
-            lb_input = Input.GetButton("LB");
-            rightAxis_down = Input.GetButtonUp("L");
+            rb_input = Input.GetButton(StaticStrings.RB);
+            lb_input = Input.GetButton(StaticStrings.LB);
+            rightAxis_down = Input.GetButtonUp(StaticStrings.L) || Input.GetKeyUp(KeyCode.Tab);
 
             if(b_input)
                 b_timer += delta;
@@ -127,16 +127,25 @@ namespace SS
                     camManager.lockon = false;
                     camManager.lockonTarget = null;
                 }
+            } else {
+                    states.lockOn = false;
+                    states.lockOnTarget = null;
+                    states.lockOnTransform = null;
+                    camManager.lockon = false;
+                    camManager.lockonTarget = null;
             }
 
             if(rightAxis_down)
             {
                 states.lockOn = !states.lockOn;
-                if (states.lockOnTarget == null)
+
+                states.lockOnTarget = EnemyManager.singleton.GetEnemy(transform.position);
+                if(states.lockOnTarget == null)
                     states.lockOn = false;
-               
+
                 camManager.lockonTarget = states.lockOnTarget;
-                states.lockOnTransform = camManager.lockonTransform;
+                states.lockOnTransform = states.lockOnTarget.GetTarget();
+                camManager.lockonTransform = states.lockOnTransform;
                 camManager.lockon = states.lockOn;
             }   
         }

@@ -83,7 +83,7 @@ namespace SS {
 
         void Update(){
             delta = Time.deltaTime;
-            canMove = anim.GetBool("can_move");
+            canMove = anim.GetBool(StaticStrings.canMove);
             if(dontDoAnything){
                 dontDoAnything = !canMove;
                 return;
@@ -107,18 +107,18 @@ namespace SS {
                 anim.applyRootMotion = false;
 
                 //Debug
-                timer += Time.deltaTime;
-                if(timer > 3){
-                    DoAction();
-                    timer = 0;
-                }
+                // timer += Time.deltaTime;
+                // if(timer > 3){
+                //     DoAction();
+                //     timer = 0;
+                // }
             }
         }
 
         void DoAction(){
             anim.Play("oh_attack_1");
             anim.applyRootMotion = true;
-            anim.SetBool("can_move", false);
+            anim.SetBool(StaticStrings.canMove, false);
         }
 
         public void DoDamage(float v){
@@ -129,7 +129,7 @@ namespace SS {
             isInvincible = true;
             anim.Play("hit1");
             anim.applyRootMotion = true;
-            anim.SetBool("can_move", false);
+            anim.SetBool(StaticStrings.canMove, false);
         }
 
         public void CheckForParry(Transform target, StateManager states){
@@ -144,24 +144,24 @@ namespace SS {
 
 
             isInvincible = true;
-            anim.Play("attack_interrupt");
+            anim.Play(StaticStrings.attack_interrupt);
             anim.applyRootMotion = true;
-            anim.SetBool("can_move", false);
+            anim.SetBool(StaticStrings.canMove, false);
             parriedBy = states;
         }
 
         public void BeingRiposted() {
             health -= 500;
             dontDoAnything = true;
-            anim.SetBool("can_move", false);
-            anim.Play("parry_recieved");
+            anim.SetBool(StaticStrings.canMove, false);
+            anim.Play(StaticStrings.parry_recieved);
         }
 
         public void BeingBackstabbed() {
            // health -= 500;
             dontDoAnything = true;
-            anim.SetBool("can_move", false);
-            anim.Play("backstabbed");
+            anim.SetBool(StaticStrings.canMove, false);
+            anim.Play(StaticStrings.backstabbed);
         }
     }
 }

@@ -24,6 +24,8 @@ namespace SS
             {
                 targets.Add(anim.GetBoneTransform(humanBodyBones[i]));
             }
+
+            EnemyManager.singleton.enemyTargets.Add(this);
         }
 
         public Transform GetTarget(bool negative = false) 
