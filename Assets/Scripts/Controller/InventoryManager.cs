@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SS.UI;
 
 namespace SS {
     public class InventoryManager : MonoBehaviour
@@ -31,6 +32,11 @@ namespace SS {
             states.anim.SetBool("mirror", isLeft);
             states.anim.Play("changeWeapon");
             states.anim.Play(targetIdle);
+
+            QuickSlot uiSlot = QuickSlot.singleton;
+            uiSlot.UpdateSlot(
+                (isLeft)?
+                QSlotType.lh : QSlotType.rh, w.icon);
         }
 
         public void OpenAllDamageColiders(){
@@ -59,6 +65,8 @@ namespace SS {
 
     [System.Serializable]
     public class Weapon {
+        public string weaponID;
+        public Sprite icon;
         public string oh_idle;
         public string th_idle;
 
