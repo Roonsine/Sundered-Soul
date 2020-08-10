@@ -6,8 +6,10 @@ namespace SS {
     public class EnemyStates : MonoBehaviour
     {
         public float health;
+
+        public CharacterStats characterStats;
+
         public bool canBeParried = true;
-        // change the var name below
         public bool parryable = true;
         public bool isInvincible;
         public bool dontDoAnything;
@@ -21,6 +23,7 @@ namespace SS {
         AnimatorHook a_hook;
         public Rigidbody rigid;
         public float delta;
+        public float poiseDegrade = 2;
 
         List<Rigidbody> ragdollRigids = new List<Rigidbody>();
         List<Collider> ragdollColliders = new List<Collider>();
@@ -28,7 +31,7 @@ namespace SS {
         float timer;
 
         void Start(){
-            health = 100;
+            health = characterStats.hp;
             anim = GetComponentInChildren<Animator>();
             enemyTarget = GetComponent<EnemyTarget>();
             enemyTarget.Init(this);
@@ -106,13 +109,17 @@ namespace SS {
                 parryable = false;
                 anim.applyRootMotion = false;
 
-                //Debug
+                // Debug
                 // timer += Time.deltaTime;
                 // if(timer > 3){
                 //     DoAction();
                 //     timer = 0;
                 // }
             }
+
+            characterStats.poise -= delta * poiseDegrade;
+            if(characterStats.poise < 0)
+                characterStats.poise = 0;
         }
 
         void DoAction(){
@@ -121,13 +128,26 @@ namespace SS {
             anim.SetBool(StaticStrings.canMove, false);
         }
 
-        public void DoDamage(float v){
+        public void DoDamage(Action a){
             if(isInvincible)
                 return;
+
+            float damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
+
+            characterStats.poise += damage;          
+            health -= damage;
             
-            health -= v;
+            if(canMove || characterStats.poise > 100) {
+                if(a.overrideDamageAnim)
+                    anim.Play(a.damageAnim);
+                else {
+                    int ran = Random.Range(0, 100);
+                    string tA = (ran > 50 ) ? StaticStrings.damage1 : StaticStrings.damage2;
+                    anim.Play(tA);
+               }
+            }
+
             isInvincible = true;
-            anim.Play("hit1");
             anim.applyRootMotion = true;
             anim.SetBool(StaticStrings.canMove, false);
         }
@@ -150,15 +170,18 @@ namespace SS {
             parriedBy = states;
         }
 
-        public void BeingRiposted() {
-            health -= 500;
+        public void BeingRiposted(WeaponStats weaponStats) {
+            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
+            health -= damage;
+
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.parry_recieved);
         }
 
-        public void BeingBackstabbed() {
-           // health -= 500;
+        public void BeingBackstabbed(WeaponStats weaponStats) {
+            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
+            health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);
             anim.Play(StaticStrings.backstabbed);

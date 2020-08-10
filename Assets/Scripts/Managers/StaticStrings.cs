@@ -44,5 +44,8 @@ namespace SS{
         public static string parry_recieved = "parry_recieved";
         public static string backstabbed = "backstabbed";
         public static string changeWeapon = "changeWeapon";
+        public static string damage1 = "damage_1";
+        public static string damage2 = "damage_2";
+        public static string damage3 = "damage_3";
     }
 }

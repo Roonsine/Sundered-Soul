@@ -56,8 +56,11 @@
      <Compile Include="Assets\Scripts\Items\DamageCollider.cs" />
      <Compile Include="Assets\Scripts\Items\ParryCollider.cs" />
      <Compile Include="Assets\Scripts\Items\WeaponHook.cs" />
+     <Compile Include="Assets\Scripts\Managers\DS3TestScript.cs" />
      <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
      <Compile Include="Assets\Scripts\Managers\StaticStrings.cs" />
+     <Compile Include="Assets\Scripts\Managers\StatsCalculations.cs" />
+     <Compile Include="Assets\Scripts\Stats\CharacterStats.cs" />
      <Compile Include="Assets\Scripts\UI\QuickSlot.cs" />
      <Compile Include="Assets\Scripts\Utilities\Helper.cs" />
      <Compile Include="Assets\Scripts\Utilities\KeepBool.cs" />
@@ -208,11 +211,13 @@
  </Reference>
  <Reference Include="UnityEngine.UIModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
- </Reference> <Reference Include="UnityEngine.UI">
- <HintPath>Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
-</Reference> <Reference Include="UnityEngine.UIElementsModule">
+ </Reference>
+ <Reference Include="UnityEngine.UIElementsModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEngine.UI">
+<HintPath>Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+</Reference>
  <Reference Include="UnityEngine.UNETModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
  </Reference>

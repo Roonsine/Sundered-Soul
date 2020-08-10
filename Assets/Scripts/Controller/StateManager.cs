@@ -9,6 +9,10 @@ namespace SS
         [Header("Init")]
         public GameObject activeModel;
 
+        [Header("Player Stats")]
+        public Attributes attributes;
+        public CharacterStats characterStats;
+
         [Header("Inputs")]
         public float vertical;
         public float horizontal;
@@ -60,6 +64,9 @@ namespace SS
         public float delta;
         [HideInInspector]
         public LayerMask ignoreLayers;
+
+        [HideInInspector]
+        public Action currentAction ;
 
         float _actionDelay;
 
@@ -235,6 +242,7 @@ namespace SS
         }
 
         void AttackAction(Action slot) {
+
             if(CheckForParry(slot))
                 return;
             if(CheckForBackStab(slot))
@@ -245,6 +253,8 @@ namespace SS
 
             if (string.IsNullOrEmpty(targetAnim))
                 return;
+
+            currentAction = slot;
 
             canMove = false;
             inAction = true;
@@ -298,7 +308,7 @@ namespace SS
 
                 parryTarget.transform.rotation = eRotation;
                 transform.rotation = playerRot;
-                parryTarget.BeingRiposted();
+                parryTarget.BeingRiposted(inventoryManager.GetCurrentWeapon(isLeftHand).parryStats);
                 canMove = false;
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);
@@ -336,7 +346,7 @@ namespace SS
 
 
                 backstabTarget.transform.rotation = transform.rotation;
-                backstabTarget.BeingBackstabbed();
+                backstabTarget.BeingBackstabbed(inventoryManager.GetCurrentWeapon(isLeftHand).backstabStats);
                 canMove = false;
                 inAction = true;
                 anim.SetBool(StaticStrings.mirror, slot.mirror);

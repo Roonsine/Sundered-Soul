@@ -19,6 +19,7 @@ namespace SS {
 
             EquipWeapon(rightHandWeapon, false);
             EquipWeapon(leftHandWeapon, true);
+            InitAllDamageColliders(st);
             CloseAllDamageColliders();
             ParryCollider pr = parryCollider.GetComponent<ParryCollider>();
             pr.InitPlayer(st);
@@ -39,6 +40,13 @@ namespace SS {
                 QSlotType.lh : QSlotType.rh, w.icon);
         }
 
+        public Weapon GetCurrentWeapon(bool isLeft) {
+            if(isLeft)
+                return leftHandWeapon;
+            else
+                return rightHandWeapon;
+        }
+
         public void OpenAllDamageColiders(){
             if(rightHandWeapon.w_hook != null)
                 rightHandWeapon.w_hook.OpenDamageColliders();
@@ -52,6 +60,13 @@ namespace SS {
                 rightHandWeapon.w_hook.CloseDamageColliders();
             if(leftHandWeapon.w_hook != null)
                 leftHandWeapon.w_hook.CloseDamageColliders();
+        }
+
+        public void InitAllDamageColliders(StateManager states) {
+            if(rightHandWeapon.w_hook != null)
+                rightHandWeapon.w_hook.InitDamageColliders(states);
+            if(leftHandWeapon.w_hook != null)
+                leftHandWeapon.w_hook.InitDamageColliders(states);
         }
 
         public void CloseParryCollider(){
@@ -72,6 +87,8 @@ namespace SS {
 
         public List<Action> actions;
         public List<Action> two_handedActions;
+        public WeaponStats parryStats;
+        public WeaponStats backstabStats;
         public bool leftHandMirror;
 
         public GameObject weaponModel;
