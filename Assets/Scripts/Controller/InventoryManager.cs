@@ -87,6 +87,7 @@ namespace SS {
     [System.Serializable]
     public class Weapon {
         public string weaponID;
+        public string weaponName;
         public Sprite icon;
         public string oh_idle;
         public string th_idle;
@@ -109,5 +110,9 @@ namespace SS {
             }
             return null;
         }
+
+        public Vector3 model_pos;
+        public Vector3 model_eulers;
+        public Vector3 model_scale;
     }
 }

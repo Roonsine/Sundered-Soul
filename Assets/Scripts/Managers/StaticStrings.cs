@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace SS{
     public static class StaticStrings
@@ -55,5 +56,16 @@ namespace SS{
         //other
         public static string _l = "_l";
         public static string _r = "_r";
+
+        //Data
+        public static string itemFolder = "/Items/";
+        
+        public static string SaveLocation() {
+            string r = Application.streamingAssetsPath;
+            if(!Directory.Exists(r)){
+                Directory.CreateDirectory(r);
+            }
+            return r;
+        }
     }
 }

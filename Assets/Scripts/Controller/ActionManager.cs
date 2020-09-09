@@ -148,7 +148,7 @@ namespace SS
         public bool canBeParried;
         public bool changeSpeed = false;
         public float animSpeed = 1;
-        public bool canParry = false;
+        public bool canRiposte = false;
         public bool canBackstab = false;
         [HideInInspector]
         public float parryMultiplier;

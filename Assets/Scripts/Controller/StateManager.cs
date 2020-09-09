@@ -270,7 +270,7 @@ namespace SS
         }
 
         bool CheckForParry(Action slot) {
-            if(slot.canParry == false)
+            if(slot.canRiposte == false)
                 return false;
 
             EnemyStates parryTarget = null;

@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Items\WeaponHook.cs" />
      <Compile Include="Assets\Scripts\Managers\DS3TestScript.cs" />
      <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\ResourcesManager.cs" />
      <Compile Include="Assets\Scripts\Managers\StaticStrings.cs" />
      <Compile Include="Assets\Scripts\Managers\StatsCalculations.cs" />
      <Compile Include="Assets\Scripts\Stats\CharacterStats.cs" />
@@ -57,9 +58,12 @@
      <Compile Include="Assets\Scripts\Utilities\Helper.cs" />
      <Compile Include="Assets\Scripts\Utilities\KeepBool.cs" />
      <Compile Include="Assets\Utilities\IconMaker\IconMaker.cs" />
+     <Compile Include="Assets\Utilities\XML Maker\ItemToXML.cs" />
+     <Compile Include="Assets\Utilities\XML Maker\XMLtoResources.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
+     <None Include="Assets\StreamingAssets\Items\items_database.xml" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
