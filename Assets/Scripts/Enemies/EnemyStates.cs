@@ -109,12 +109,11 @@ namespace SS {
                 parryable = false;
                 anim.applyRootMotion = false;
 
-                // Debug
-                // timer += Time.deltaTime;
-                // if(timer > 3){
-                //     DoAction();
-                //     timer = 0;
-                // }
+                timer += Time.deltaTime;
+                if(timer > 3){
+                    DoAction();
+                    timer = 0;
+                }
             }
 
             characterStats.poise -= delta * poiseDegrade;
@@ -132,7 +131,7 @@ namespace SS {
             if(isInvincible)
                 return;
 
-            float damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
+            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats);
 
             characterStats.poise += damage;          
             health -= damage;
@@ -170,8 +169,8 @@ namespace SS {
             parriedBy = states;
         }
 
-        public void BeingRiposted(WeaponStats weaponStats) {
-            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
+        public void BeingRiposted(Action a) {
+            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats, a.parryMultiplier);
             health -= damage;
 
             dontDoAnything = true;
@@ -179,8 +178,8 @@ namespace SS {
             anim.Play(StaticStrings.parry_recieved);
         }
 
-        public void BeingBackstabbed(WeaponStats weaponStats) {
-            int damage = StatsCalculations.CalculateBaseDamage(weaponStats, characterStats);
+        public void BeingBackstabbed(Action a) {
+            int damage = StatsCalculations.CalculateBaseDamage(a.weaponStats, characterStats, a.backstabMultiplier);
             health -= damage;
             dontDoAnything = true;
             anim.SetBool(StaticStrings.canMove, false);

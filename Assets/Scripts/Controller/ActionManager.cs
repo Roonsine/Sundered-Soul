@@ -22,15 +22,15 @@ namespace SS
         public void UpdateActionsOneHanded(){
             EmptyAllSlots();
 
-            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rb, ActionInput.rb);
-            DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.rt, ActionInput.rt);
+            DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rb, ActionInput.rb);
+            DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.rt, ActionInput.rt);
 
             if(states.inventoryManager.hasLeftHandWeapon){
-                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rb, ActionInput.lb, true);
-                DeepCopyAction(states.inventoryManager.leftHandWeapon, ActionInput.rt, ActionInput.lt, true);
+                DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rb, ActionInput.lb, true);
+                DeepCopyAction(states.inventoryManager.leftHandWeapon.instance, ActionInput.rt, ActionInput.lt, true);
             } else {
-                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lb, ActionInput.lb);
-                DeepCopyAction(states.inventoryManager.rightHandWeapon, ActionInput.lt, ActionInput.lt);
+                DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lb, ActionInput.lb);
+                DeepCopyAction(states.inventoryManager.rightHandWeapon.instance, ActionInput.lt, ActionInput.lt);
             }
         }
 
@@ -48,6 +48,8 @@ namespace SS
             a.canBackstab = w_a.canBackstab;
             a.overrideDamageAnim = w_a.overrideDamageAnim;
             a.damageAnim = w_a.damageAnim;
+            a.parryMultiplier = w.parryMultiplier;
+            a.backstabMultiplier = w.backstabMultiplier;
 
             if(isLeftHand){
                 a.mirror = true;
@@ -69,7 +71,7 @@ namespace SS
 
         public void UpdateActionsTwoHanded(){
             EmptyAllSlots();
-            Weapon w = states.inventoryManager.rightHandWeapon;
+            Weapon w = states.inventoryManager.rightHandWeapon.instance;
             for (int i = 0; i < w.two_handedActions.Count; i++)
             {
                 Action a = GetAction(w.two_handedActions[i].input);
@@ -146,7 +148,12 @@ namespace SS
         public bool canBeParried;
         public bool changeSpeed = false;
         public float animSpeed = 1;
+        public bool canParry = false;
         public bool canBackstab = false;
+        [HideInInspector]
+        public float parryMultiplier;
+        [HideInInspector]
+        public float backstabMultiplier;
 
         public bool overrideDamageAnim;
         public string damageAnim;

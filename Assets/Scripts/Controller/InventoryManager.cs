@@ -6,9 +6,9 @@ using SS.UI;
 namespace SS {
     public class InventoryManager : MonoBehaviour
     {
-        public Weapon rightHandWeapon;
+        public ItemInstance rightHandWeapon;
         public bool hasLeftHandWeapon = true;
-        public Weapon leftHandWeapon;
+        public ItemInstance leftHandWeapon;
 
         public GameObject parryCollider;
 
@@ -17,8 +17,13 @@ namespace SS {
         public void Init(StateManager st) {
             states = st;
 
-            EquipWeapon(rightHandWeapon, false);
-            EquipWeapon(leftHandWeapon, true);
+            if(rightHandWeapon != null)
+                EquipWeapon(rightHandWeapon.instance, false);
+            if(leftHandWeapon != null)
+                EquipWeapon(leftHandWeapon.instance, true);
+
+            hasLeftHandWeapon = (leftHandWeapon != null);
+
             InitAllDamageColliders(st);
             CloseAllDamageColliders();
             ParryCollider pr = parryCollider.GetComponent<ParryCollider>();
@@ -29,7 +34,7 @@ namespace SS {
 
         public void EquipWeapon(Weapon w, bool isLeft = false) {
             string targetIdle = w.oh_idle;
-            targetIdle += (isLeft) ? "_l" : "_r";
+            targetIdle += (isLeft) ? StaticStrings._l : StaticStrings._r;
             states.anim.SetBool(StaticStrings.mirror, isLeft);
             states.anim.Play(StaticStrings.changeWeapon);
             states.anim.Play(targetIdle);
@@ -38,35 +43,36 @@ namespace SS {
             uiSlot.UpdateSlot(
                 (isLeft)?
                 QSlotType.lh : QSlotType.rh, w.icon);
+            w.weaponModel.SetActive(true);
         }
 
         public Weapon GetCurrentWeapon(bool isLeft) {
             if(isLeft)
-                return leftHandWeapon;
+                return leftHandWeapon.instance;
             else
-                return rightHandWeapon;
+                return rightHandWeapon.instance;
         }
 
         public void OpenAllDamageColiders(){
-            if(rightHandWeapon.w_hook != null)
-                rightHandWeapon.w_hook.OpenDamageColliders();
+            if(rightHandWeapon.instance.w_hook != null)
+                rightHandWeapon.instance.w_hook.OpenDamageColliders();
             
-            if(leftHandWeapon.w_hook != null)
-                leftHandWeapon.w_hook.OpenDamageColliders();
+            if(leftHandWeapon.instance.w_hook != null)
+                leftHandWeapon.instance.w_hook.OpenDamageColliders();
         }
 
         public void CloseAllDamageColliders(){
-            if(rightHandWeapon.w_hook != null)
-                rightHandWeapon.w_hook.CloseDamageColliders();
-            if(leftHandWeapon.w_hook != null)
-                leftHandWeapon.w_hook.CloseDamageColliders();
+            if(rightHandWeapon.instance.w_hook != null)
+                rightHandWeapon.instance.w_hook.CloseDamageColliders();
+            if(leftHandWeapon.instance.w_hook != null)
+                leftHandWeapon.instance.w_hook.CloseDamageColliders();
         }
 
         public void InitAllDamageColliders(StateManager states) {
-            if(rightHandWeapon.w_hook != null)
-                rightHandWeapon.w_hook.InitDamageColliders(states);
-            if(leftHandWeapon.w_hook != null)
-                leftHandWeapon.w_hook.InitDamageColliders(states);
+            if(rightHandWeapon.instance.w_hook != null)
+                rightHandWeapon.instance.w_hook.InitDamageColliders(states);
+            if(leftHandWeapon.instance.w_hook != null)
+                leftHandWeapon.instance.w_hook.InitDamageColliders(states);
         }
 
         public void CloseParryCollider(){
@@ -87,8 +93,8 @@ namespace SS {
 
         public List<Action> actions;
         public List<Action> two_handedActions;
-        public WeaponStats parryStats;
-        public WeaponStats backstabStats;
+        public float parryMultiplier;
+        public float backstabMultiplier;
         public bool leftHandMirror;
 
         public GameObject weaponModel;
