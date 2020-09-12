@@ -55,9 +55,29 @@ namespace SS.Utilities {
                 float.TryParse(backstabMultiplier.InnerText, out _w.backstabMultiplier);
                 XmlNode LeftHandMirror = w.SelectSingleNode("LeftHandMirror");
                 _w.leftHandMirror = (LeftHandMirror.InnerText == "True");
+                
+                _w.model_pos = XmlToVector(w, "mp");
+                _w.model_eulers = XmlToVector(w,"me");
+                _w.model_scale = XmlToVector(w, "ms");
 
                 resourcesManager.weaponList.Add(_w);
             }
+        }
+
+        Vector3 XmlToVector(XmlNode w, string prefix) {
+                XmlNode _x = w.SelectSingleNode(prefix + "_x");
+                float x = 0;
+                float.TryParse(_x.InnerText, out x);
+
+                XmlNode _y = w.SelectSingleNode(prefix + "_y");
+                float y = 0;
+                float.TryParse(_y.InnerText, out y);
+
+                XmlNode _z = w.SelectSingleNode(prefix + "_z");
+                float z = 0;
+                float.TryParse(_z.InnerText, out z);
+
+                return new Vector3(x,y,z);
         }
 
         void XmlToActions(XmlDocument doc, string nodeName, ref Weapon _w) {
@@ -112,6 +132,7 @@ namespace SS.Utilities {
                 if(nodeName == "actions"){
                     _w.actions.Add(_a);
                 } else {
+                    Debug.Log(nodeName);
                     _w.two_handedActions.Add(_a);
                 }
             }

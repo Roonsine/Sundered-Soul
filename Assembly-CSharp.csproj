@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Managers\DS3TestScript.cs" />
      <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
      <Compile Include="Assets\Scripts\Managers\ResourcesManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\StaticFunctions.cs" />
      <Compile Include="Assets\Scripts\Managers\StaticStrings.cs" />
      <Compile Include="Assets\Scripts\Managers\StatsCalculations.cs" />
      <Compile Include="Assets\Scripts\Stats\CharacterStats.cs" />

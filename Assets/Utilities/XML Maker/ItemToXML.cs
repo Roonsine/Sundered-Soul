@@ -32,14 +32,23 @@ namespace SS.Utilities {
                 xml += "<th_Idle>" + w.th_idle + "</th_Idle>" + "\n";
 
                 xml += ActionListToString(w.actions, "actions");
-                xml += ActionListToString(w.two_handedActions, "two_handed");
+                xml += ActionListToString(w.two_handedActions, "twoHanded");
 
                 xml += "<parryMultiplier>" + w.parryMultiplier + "</parryMultiplier>" + "\n";
                 xml += "<backstabMultiplier>" + w.backstabMultiplier + "</backstabMultiplier>" + "\n";
                 xml += "<LeftHandMirror>" + w.leftHandMirror + "</LeftHandMirror>" + "\n";
-                xml += "<ModelPosition>" + w.model_pos + "</ModelPosition>" + "\n";
-                xml += "<ModelEulers>" + w.model_eulers + "</ModelEulers>" + "\n";
-                xml += "<ModelScale>" + w.model_scale + "</ModelScale>" + "\n";
+
+                xml += "<mp_x>" + w.model_pos.x + "</mp_x>";
+                xml += "<mp_y>" + w.model_pos.y + "</mp_y>";
+                xml += "<mp_z>" + w.model_pos.z + "</mp_z>" + "\n";
+
+                xml += "<me_x>" + w.model_eulers.x + "</me_x>";
+                xml += "<me_y>" + w.model_eulers.y + "</me_y>";
+                xml += "<me_z>" + w.model_eulers.z + "</me_z>" + "\n";
+
+                xml += "<ms_x>" + w.model_scale.x + "</ms_x>";
+                xml += "<ms_y>" + w.model_scale.y + "</ms_y>";
+                xml += "<ms_z>" + w.model_scale.z + "</ms_z>" + "\n";
                 
                 xml += "</Weapon>" + "\n";
 

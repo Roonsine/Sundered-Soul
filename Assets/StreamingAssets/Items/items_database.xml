@@ -1,7 +1,7 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <root><Weapon>
 <WeaponName>Initiates Sword</WeaponName>
-<Weapon_ID>0001</Weapon_ID>
+<Weapon_ID>Sword</Weapon_ID>
 <oh_Idle>oh_idle</oh_Idle>
 <th_Idle>th_idle</th_Idle>
 <actions>
@@ -91,62 +91,8 @@
 <parryMultiplier>8</parryMultiplier>
 <backstabMultiplier>5</backstabMultiplier>
 <LeftHandMirror>True</LeftHandMirror>
-<ModelPosition>(0.0, 0.0, 0.0)</ModelPosition>
-<ModelEulers>(0.0, 0.0, 0.0)</ModelEulers>
-<ModelScale>(0.0, 0.0, 0.0)</ModelScale>
-</Weapon>
-<Weapon>
-<WeaponName>Initiates Shield</WeaponName>
-<Weapon_ID>0002</Weapon_ID>
-<oh_Idle>oh_idle</oh_Idle>
-<th_Idle>th_idle</th_Idle>
-<actions>
-<ActionInput>rb</ActionInput>
-<ActionType>block</ActionType>
-<targetAnim></targetAnim>
-<mirror>False</mirror>
-<canBeParried>False</canBeParried>
-<changeSpeed>False</changeSpeed>
-<animSpeed>0</animSpeed>
-<canRiposte>False</canRiposte>
-<canBackstab>False</canBackstab>
-<overrideDamageAnim>False</overrideDamageAnim>
-<damageAnim></damageAnim>
-<Physical>0</Physical>
-<Strike>0</Strike>
-<Slash>0</Slash>
-<Thrust>0</Thrust>
-<Magic>0</Magic>
-<Fire>0</Fire>
-<Lightning>0</Lightning>
-<Dark>0</Dark>
-</actions>
-<actions>
-<ActionInput>rt</ActionInput>
-<ActionType>parry</ActionType>
-<targetAnim>parry</targetAnim>
-<mirror>False</mirror>
-<canBeParried>False</canBeParried>
-<changeSpeed>False</changeSpeed>
-<animSpeed>0</animSpeed>
-<canRiposte>False</canRiposte>
-<canBackstab>False</canBackstab>
-<overrideDamageAnim>False</overrideDamageAnim>
-<damageAnim></damageAnim>
-<Physical>100</Physical>
-<Strike>0</Strike>
-<Slash>0</Slash>
-<Thrust>0</Thrust>
-<Magic>0</Magic>
-<Fire>0</Fire>
-<Lightning>0</Lightning>
-<Dark>0</Dark>
-</actions>
-<parryMultiplier>8</parryMultiplier>
-<backstabMultiplier>5</backstabMultiplier>
-<LeftHandMirror>True</LeftHandMirror>
-<ModelPosition>(0.0, 0.0, 0.0)</ModelPosition>
-<ModelEulers>(0.0, 0.0, 0.0)</ModelEulers>
-<ModelScale>(0.0, 0.0, 0.0)</ModelScale>
+<mp_x>0.1445</mp_x><mp_y>0.1266</mp_y><mp_z>0.1841</mp_z>
+<me_x>25.679</me_x><me_y>-145.097</me_y><me_z>0</me_z>
+<ms_x>0.4999999</ms_x><ms_y>0.5</ms_y><ms_z>0.5</ms_z>
 </Weapon>
 </root>
