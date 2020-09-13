@@ -5,33 +5,47 @@ using UnityEngine;
 namespace SS {
     public class ResourcesManager : MonoBehaviour
     {
-        public List<Weapon> weaponList = new List<Weapon>();
-        Dictionary<string, int> weapon_dict = new Dictionary<string, int>();
-
+        Dictionary<string, int> item_ids = new Dictionary<string,int>();
         public static ResourcesManager singleton;
         void Awake() {
             singleton = this;
+            LoadIds();
+        }
 
-            for (int i = 0; i < weaponList.Count; i++)
+
+
+        void LoadIds() {
+            WeaponScriptableObject obj = Resources.Load("SS.WeaponScriptableObject") as WeaponScriptableObject;
+            for (int i = 0; i < obj.weapons_all.Count; i++)
             {
-                if(string.IsNullOrEmpty(weaponList[i].weaponID)) {
-                    continue;
-                }
-
-                if(!weapon_dict.ContainsKey(weaponList[i].weaponID)) {
-                    weapon_dict.Add(weaponList[i].weaponID, i);
+                if(item_ids.ContainsKey(obj.weapons_all[i].itemName)) {
+                    Debug.Log("item is a duplicate.");
                 } else {
-                    Debug.Log(weaponList[i].weaponID + " is a duplicate id");
+                    item_ids.Add(obj.weapons_all[i].itemName, i);
                 }
             }
         }
-
-        public Weapon GetWeapon(string id) {
+        
+        int GetItemIdFromString(string id) {
             int index = -1;
+            if(item_ids.TryGetValue(id, out index)){
+                return index;
+            }
+            return -1;
+        }
+    
+        public Weapon GetWeapon(string id) {
+            WeaponScriptableObject obj = Resources.Load("SS.WeaponScriptableObject") as WeaponScriptableObject;
+            int index = GetItemIdFromString(id);
+            if(index == -1)
+                return null;            
+            return obj.weapons_all[index];
+
+            /* int index = -1;
             if(weapon_dict.TryGetValue(id, out index)) {
                 return weaponList[index];
             }
-            return null;
+            return null;*/
         }
     }
 }

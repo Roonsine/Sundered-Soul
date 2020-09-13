@@ -9,7 +9,7 @@ namespace SS.Utilities {
     public class ItemToXML : MonoBehaviour
     {
         public bool make;
-        public List<ItemInstance> candidates = new List<ItemInstance>();
+        public List<RuntimeWeapon> candidates = new List<RuntimeWeapon>();
         public string xml_version;
         public string targetName;
 
@@ -21,30 +21,29 @@ namespace SS.Utilities {
             string xml = xml_version;
             xml += "\n";
             xml += "<root>";
-            foreach (ItemInstance i in candidates)
+            foreach (RuntimeWeapon i in candidates)
             {
                 Weapon w = i.instance;
 
                 xml += "<Weapon>" + "\n";
-                xml += "<WeaponName>" + w.weaponName + "</WeaponName>" + "\n";
-                xml += "<Weapon_ID>" + w.weaponID + "</Weapon_ID>" + "\n";
+                xml += "<WeaponName>" + w.itemName + "</WeaponName>" + "\n";
                 xml += "<oh_Idle>" + w.oh_idle + "</oh_Idle>" + "\n";
                 xml += "<th_Idle>" + w.th_idle + "</th_Idle>" + "\n";
 
                 xml += ActionListToString(w.actions, "actions");
-                xml += ActionListToString(w.two_handedActions, "twoHanded");
+                xml += ActionListToString(w.two_handedActions, "two_handed");
 
                 xml += "<parryMultiplier>" + w.parryMultiplier + "</parryMultiplier>" + "\n";
                 xml += "<backstabMultiplier>" + w.backstabMultiplier + "</backstabMultiplier>" + "\n";
                 xml += "<LeftHandMirror>" + w.leftHandMirror + "</LeftHandMirror>" + "\n";
 
-                xml += "<mp_x>" + w.model_pos.x + "</mp_x>";
-                xml += "<mp_y>" + w.model_pos.y + "</mp_y>";
-                xml += "<mp_z>" + w.model_pos.z + "</mp_z>" + "\n";
+                // xml += "<mp_x>" + w.model_pos.x + "</mp_x>";
+                // xml += "<mp_y>" + w.model_pos.y + "</mp_y>";
+                // xml += "<mp_z>" + w.model_pos.z + "</mp_z>" + "\n";
 
-                xml += "<me_x>" + w.model_eulers.x + "</me_x>";
-                xml += "<me_y>" + w.model_eulers.y + "</me_y>";
-                xml += "<me_z>" + w.model_eulers.z + "</me_z>" + "\n";
+                // xml += "<me_x>" + w.model_eulers.x + "</me_x>";
+                // xml += "<me_y>" + w.model_eulers.y + "</me_y>";
+                // xml += "<me_z>" + w.model_eulers.z + "</me_z>" + "\n";
 
                 xml += "<ms_x>" + w.model_scale.x + "</ms_x>";
                 xml += "<ms_y>" + w.model_scale.y + "</ms_y>";

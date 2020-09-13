@@ -44,9 +44,12 @@
      <Compile Include="Assets\Scripts\Controller\StateManager.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyStates.cs" />
      <Compile Include="Assets\Scripts\Enemies\EnemyTarget.cs" />
+     <Compile Include="Assets\Scripts\Inventory\InventoryScriptableObject.cs" />
+     <Compile Include="Assets\Scripts\Inventory\ScriptableObjectManager.cs" />
+     <Compile Include="Assets\Scripts\Inventory\WeaponScriptableObject.cs" />
      <Compile Include="Assets\Scripts\Items\DamageCollider.cs" />
-     <Compile Include="Assets\Scripts\Items\ItemInstance.cs" />
      <Compile Include="Assets\Scripts\Items\ParryCollider.cs" />
+     <Compile Include="Assets\Scripts\Items\RuntimeWeapon.cs" />
      <Compile Include="Assets\Scripts\Items\WeaponHook.cs" />
      <Compile Include="Assets\Scripts\Managers\DS3TestScript.cs" />
      <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
@@ -59,6 +62,7 @@
      <Compile Include="Assets\Scripts\Utilities\Helper.cs" />
      <Compile Include="Assets\Scripts\Utilities\KeepBool.cs" />
      <Compile Include="Assets\Utilities\IconMaker\IconMaker.cs" />
+     <Compile Include="Assets\Utilities\WeaponPlacer\WeaponPlacer.cs" />
      <Compile Include="Assets\Utilities\XML Maker\ItemToXML.cs" />
      <Compile Include="Assets\Utilities\XML Maker\XMLtoResources.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />

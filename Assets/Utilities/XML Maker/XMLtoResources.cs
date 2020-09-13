@@ -37,10 +37,8 @@ namespace SS.Utilities {
                 _w.actions = new List<Action>();
                 _w.actions = new List<Action>();
 
-                XmlNode weaponName = w.SelectSingleNode("WeaponName");
-                _w.weaponName = weaponName.InnerText;
-                XmlNode weaponId = w.SelectSingleNode("Weapon_ID");
-                _w.weaponID = weaponId.InnerText;
+                //XmlNode weaponId = w.SelectSingleNode("Weapon_ID");
+                //_w.weaponID = weaponId.InnerText;
                 XmlNode oh_Idle = w.SelectSingleNode("oh_Idle");
                 _w.oh_idle = oh_Idle.InnerText;
                 XmlNode th_Idle = w.SelectSingleNode("th_Idle");
@@ -56,11 +54,11 @@ namespace SS.Utilities {
                 XmlNode LeftHandMirror = w.SelectSingleNode("LeftHandMirror");
                 _w.leftHandMirror = (LeftHandMirror.InnerText == "True");
                 
-                _w.model_pos = XmlToVector(w, "mp");
-                _w.model_eulers = XmlToVector(w,"me");
+                // _w.model_pos = XmlToVector(w, "mp");
+                // _w.model_eulers = XmlToVector(w,"me");
                 _w.model_scale = XmlToVector(w, "ms");
 
-                resourcesManager.weaponList.Add(_w);
+                //resourcesManager.weaponList.Add(_w);
             }
         }
 

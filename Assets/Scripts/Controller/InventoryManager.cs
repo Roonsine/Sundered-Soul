@@ -9,9 +9,9 @@ namespace SS {
         public List<string> rh_weapons;
         public List<string> lh_weapons;
         
-        public ItemInstance rightHandWeapon;
+        public RuntimeWeapon rightHandWeapon;
         public bool hasLeftHandWeapon = true;
-        public ItemInstance leftHandWeapon;
+        public RuntimeWeapon leftHandWeapon;
 
         public GameObject parryCollider;
 
@@ -21,10 +21,10 @@ namespace SS {
             states = st;
 
             if(rh_weapons.Count > 0){
-                rightHandWeapon = WeaponToItemInstance(ResourcesManager.singleton.GetWeapon(rh_weapons[0]));
+                rightHandWeapon = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[0]));
             }
             if(lh_weapons.Count > 0) {
-                leftHandWeapon = WeaponToItemInstance(ResourcesManager.singleton.GetWeapon(lh_weapons[0]), true);
+                leftHandWeapon = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[0]), true);
                 hasLeftHandWeapon = true;
             }
 
@@ -45,7 +45,7 @@ namespace SS {
         }
 
         // _w weapon variable was added in, as well as the w.init() function, w.weaponModel is never set so I had to manage a work around for it.
-        public void EquipWeapon(ItemInstance w, Weapon _w, bool isLeft = false) {
+        public void EquipWeapon(RuntimeWeapon w, Weapon _w, bool isLeft = false) {
             string targetIdle = w.instance.oh_idle;
             targetIdle += (isLeft) ? StaticStrings._l : StaticStrings._r;
             states.anim.SetBool(StaticStrings.mirror, isLeft);
@@ -57,7 +57,7 @@ namespace SS {
                 (isLeft)?
                 QSlotType.lh : QSlotType.rh, w.instance.icon);
             
-            w.init(_w);
+            // w.init(_w);
             w.weaponModel.SetActive(true);
         }
 
@@ -72,22 +72,27 @@ namespace SS {
             if(rightHandWeapon.w_hook != null)
                 rightHandWeapon.w_hook.OpenDamageColliders();
             
-            if(leftHandWeapon.w_hook != null)
-                leftHandWeapon.w_hook.OpenDamageColliders();
+            if(leftHandWeapon != null)
+                if(leftHandWeapon.w_hook != null)
+                    leftHandWeapon.w_hook.OpenDamageColliders();
         }
 
         public void CloseAllDamageColliders(){
             if(rightHandWeapon.w_hook != null)
                 rightHandWeapon.w_hook.CloseDamageColliders();
-            if(leftHandWeapon.w_hook != null)
-                leftHandWeapon.w_hook.CloseDamageColliders();
+            
+            if(leftHandWeapon != null)
+                if(leftHandWeapon.w_hook != null)
+                    leftHandWeapon.w_hook.CloseDamageColliders();
         }
 
         public void InitAllDamageColliders(StateManager states) {
             if(rightHandWeapon.w_hook != null)
                 rightHandWeapon.w_hook.InitDamageColliders(states);
-            if(leftHandWeapon.w_hook != null)
-                leftHandWeapon.w_hook.InitDamageColliders(states);
+                
+            if(leftHandWeapon != null)
+                if(leftHandWeapon.w_hook != null)
+                    leftHandWeapon.w_hook.InitDamageColliders(states);
         }
 
         public void CloseParryCollider(){
@@ -98,9 +103,9 @@ namespace SS {
             parryCollider.SetActive(true);
         }
 
-        public ItemInstance WeaponToItemInstance(Weapon w, bool isLeft = false) {
+        public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false) {
             GameObject go = new GameObject();
-            ItemInstance inst = go.AddComponent<ItemInstance>();
+            RuntimeWeapon inst = go.AddComponent<RuntimeWeapon>();           
 
             inst.instance = new Weapon();
             StaticFunctions.DeepCopyWeapon(w, inst.instance);
@@ -108,8 +113,13 @@ namespace SS {
             inst.weaponModel = Instantiate(inst.instance.modelPrefab) as GameObject;
             Transform p = states.anim.GetBoneTransform((isLeft) ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
             inst.weaponModel.transform.parent = p;
-            inst.weaponModel.transform.localPosition = inst.instance.model_pos;
-            inst.weaponModel.transform.localEulerAngles = inst.instance.model_eulers;
+            if(isLeft){
+                inst.weaponModel.transform.localPosition = inst.instance.l_model_pos;
+                inst.weaponModel.transform.localEulerAngles = inst.instance.l_model_eulers;
+            } else {
+                inst.weaponModel.transform.localPosition = inst.instance.r_model_pos;
+                inst.weaponModel.transform.localEulerAngles = inst.instance.r_model_eulers;                
+            }
             inst.weaponModel.transform.localScale = inst.instance.model_scale;
             
             inst.w_hook = inst.weaponModel.GetComponentInChildren<WeaponHook>();
@@ -119,10 +129,14 @@ namespace SS {
     }
 
     [System.Serializable]
-    public class Weapon {
-        public string weaponID;
-        public string weaponName;
+    public class Item {
+        public string itemName;
+        public string itemDescription;
         public Sprite icon;
+    }
+
+    [System.Serializable]
+    public class Weapon : Item {
         public string oh_idle;
         public string th_idle;
 
@@ -144,8 +158,10 @@ namespace SS {
             return null;
         }
 
-        public Vector3 model_pos;
-        public Vector3 model_eulers;
+        public Vector3 r_model_pos;
+        public Vector3 l_model_pos;
+        public Vector3 r_model_eulers;
+        public Vector3 l_model_eulers;
         public Vector3 model_scale;
     }
 }

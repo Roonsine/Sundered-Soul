@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a71dd2fedb7cc804a9309062a0474db8, type: 3}
+  m_Name: SS.WeaponScriptableObject
+  m_EditorClassIdentifier: 
+  weapons_all:
+  - itemName: sword
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 127f0db0ed719e64a985ccbf0c965de8, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 0
+      type: 0
+      targetAnim: oh_attack_1
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canRiposte: 0
+      canBackstab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions: []
+    parryMultiplier: 0
+    backstabMultiplier: 0
+    leftHandMirror: 0
+    modelPrefab: {fileID: 1735901884594728649, guid: 06eeb0643fd093c40a7bb1522d356700,
+      type: 3}
+    r_model_pos: {x: 0.1445, y: 0.1266, z: 0.1841}
+    l_model_pos: {x: -0.1677, y: 0.1755, z: -0.1577}
+    r_model_eulers: {x: 25.679306, y: 214.9027, z: 0.000036946218}
+    l_model_eulers: {x: 31.458113, y: 49.944206, z: 187.98315}
+    model_scale: {x: 0.4999999, y: 0.49999997, z: 0.5}
+  - itemName: shield
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 127f0db0ed719e64a985ccbf0c965de8, type: 3}
+    oh_idle: oh_idle
+    th_idle: th_idle
+    actions:
+    - input: 0
+      type: 0
+      targetAnim: oh_attack_1
+      mirror: 0
+      canBeParried: 0
+      changeSpeed: 0
+      animSpeed: 0
+      canRiposte: 0
+      canBackstab: 0
+      parryMultiplier: 0
+      backstabMultiplier: 0
+      overrideDamageAnim: 0
+      damageAnim: 
+      weaponStats:
+        physical: 0
+        strike: 0
+        slash: 0
+        thrust: 0
+        magic: 0
+        fire: 0
+        lightning: 0
+        dark: 0
+    two_handedActions: []
+    parryMultiplier: 0
+    backstabMultiplier: 0
+    leftHandMirror: 0
+    modelPrefab: {fileID: 1735901884594728649, guid: 06eeb0643fd093c40a7bb1522d356700,
+      type: 3}
+    r_model_pos: {x: 0, y: 0, z: 0}
+    l_model_pos: {x: 0.00037792604, y: 0.018466048, z: -0.013828719}
+    r_model_eulers: {x: 0, y: 0, z: 0}
+    l_model_eulers: {x: 314.6294, y: 39.473698, z: 334.50214}
+    model_scale: {x: 1, y: 1, z: 1}
