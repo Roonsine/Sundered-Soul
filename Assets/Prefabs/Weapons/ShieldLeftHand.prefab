@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2205176414987044016}
   m_Layer: 0
-  m_Name: LeftHandPivot
+  m_Name: ShieldLeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,7 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: 80f79f767d7576c4badba86b0b5a7bc9,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80f79f767d7576c4badba86b0b5a7bc9, type: 3}

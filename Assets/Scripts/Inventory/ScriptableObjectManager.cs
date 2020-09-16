@@ -26,7 +26,8 @@ namespace SS {
         public static void CreateInventory(){
 
         }
-        [MenuItem("Assets/Inventory/CreateWeaponList")]
+
+        [MenuItem("Assets/Inventory/CreateWeaponListSO")]
         public static void CreateWeaponList(){
             ScriptableObjectManager.CreateAsset<WeaponScriptableObject>();
         }

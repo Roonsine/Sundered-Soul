@@ -12,35 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71dd2fedb7cc804a9309062a0474db8, type: 3}
   m_Name: SS.WeaponScriptableObject
   m_EditorClassIdentifier: 
-  weapons_all:
-  - itemName: sword
+  weaponsAll:
+  - itemName: Sword
     itemDescription: 
-    icon: {fileID: 21300000, guid: 127f0db0ed719e64a985ccbf0c965de8, type: 3}
+    icon: {fileID: 21300000, guid: e696a2dbd45616a4fb05e91f9070f358, type: 3}
     oh_idle: oh_idle
-    th_idle: th_idle
-    actions:
-    - input: 0
-      type: 0
-      targetAnim: oh_attack_1
-      mirror: 0
-      canBeParried: 0
-      changeSpeed: 0
-      animSpeed: 0
-      canRiposte: 0
-      canBackstab: 0
-      parryMultiplier: 0
-      backstabMultiplier: 0
-      overrideDamageAnim: 0
-      damageAnim: 
-      weaponStats:
-        physical: 0
-        strike: 0
-        slash: 0
-        thrust: 0
-        magic: 0
-        fire: 0
-        lightning: 0
-        dark: 0
+    th_idle: 
+    actions: []
     two_handedActions: []
     parryMultiplier: 0
     backstabMultiplier: 0
@@ -48,19 +26,37 @@ MonoBehaviour:
     modelPrefab: {fileID: 1735901884594728649, guid: 06eeb0643fd093c40a7bb1522d356700,
       type: 3}
     r_model_pos: {x: 0.1445, y: 0.1266, z: 0.1841}
-    l_model_pos: {x: -0.1677, y: 0.1755, z: -0.1577}
+    l_model_pos: {x: 0.1445, y: 0.1266, z: 0.1841}
     r_model_eulers: {x: 25.679306, y: 214.9027, z: 0.000036946218}
-    l_model_eulers: {x: 31.458113, y: 49.944206, z: 187.98315}
+    l_model_eulers: {x: 25.679306, y: 214.9027, z: 0.000036946218}
     model_scale: {x: 0.4999999, y: 0.49999997, z: 0.5}
-  - itemName: shield
+  - itemName: Shield
     itemDescription: 
-    icon: {fileID: 21300000, guid: 127f0db0ed719e64a985ccbf0c965de8, type: 3}
+    icon: {fileID: 21300000, guid: 72f119d5b5c9cd14fb41605d9e4afe6c, type: 3}
     oh_idle: oh_idle
-    th_idle: th_idle
+    th_idle: 
+    actions: []
+    two_handedActions: []
+    parryMultiplier: 0
+    backstabMultiplier: 0
+    leftHandMirror: 0
+    modelPrefab: {fileID: 2205176414987044023, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
+      type: 3}
+    r_model_pos: {x: 0.00037792604, y: 0.018466048, z: -0.013828719}
+    l_model_pos: {x: 0.00037792604, y: 0.018466048, z: -0.013828719}
+    r_model_eulers: {x: 314.6294, y: 39.473698, z: 334.50214}
+    l_model_eulers: {x: 314.6294, y: 39.473698, z: 334.50214}
+    model_scale: {x: 1, y: 1, z: 1}
+  - itemName: Pyromancy Flame
+    itemDescription: 
+    icon: {fileID: 21300000, guid: b706812c1637d4544a970ff32379d927, type: 3}
+    oh_idle: oh_idle
+    th_idle: 
     actions:
     - input: 0
       type: 0
-      targetAnim: oh_attack_1
+      spellClass: 0
+      targetAnim: throw
       mirror: 0
       canBeParried: 0
       changeSpeed: 0
@@ -84,10 +80,10 @@ MonoBehaviour:
     parryMultiplier: 0
     backstabMultiplier: 0
     leftHandMirror: 0
-    modelPrefab: {fileID: 1735901884594728649, guid: 06eeb0643fd093c40a7bb1522d356700,
+    modelPrefab: {fileID: 1532882142243765372, guid: 2ce0a20e7b3c5b245b46b287b5f93b75,
       type: 3}
-    r_model_pos: {x: 0, y: 0, z: 0}
-    l_model_pos: {x: 0.00037792604, y: 0.018466048, z: -0.013828719}
-    r_model_eulers: {x: 0, y: 0, z: 0}
-    l_model_eulers: {x: 314.6294, y: 39.473698, z: 334.50214}
+    r_model_pos: {x: 0, y: 0.0392, z: -0}
+    l_model_pos: {x: 0, y: 0.0392, z: -0}
+    r_model_eulers: {x: -0, y: 0, z: 0}
+    l_model_eulers: {x: -0, y: 0, z: 0}
     model_scale: {x: 1, y: 1, z: 1}

@@ -22,6 +22,8 @@ namespace SS{
         public static string RB = "RB";
         public static string LB = "LB";
         public static string L = "L";
+        public static string Pad_X = "Pad_x";
+        public static string Pad_Y = "Pad_y";
 
         //Animator Parameters
         public static string vertical = "vertical";

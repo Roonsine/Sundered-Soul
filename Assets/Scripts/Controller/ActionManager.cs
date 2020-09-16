@@ -99,10 +99,19 @@ namespace SS
         attack, block, spells, parry
     }
 
+    public enum SpellClass {
+        pyromancy, faith, sorcery
+    }
+    
+    public enum SpellType {
+        projectile, buff, stationary
+    } 
+
     [System.Serializable]
     public class Action {
         public ActionInput input;
         public ActionType type;
+        public SpellClass spellClass;
         public string targetAnim;
         public bool mirror = false;
         public bool canBeParried;

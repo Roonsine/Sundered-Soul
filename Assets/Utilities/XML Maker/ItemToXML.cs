@@ -1,100 +1,118 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
+using System.IO;
+using UnityEditor;
 
-namespace SS.Utilities {
-
-    [ExecuteInEditMode]
-    public class ItemToXML : MonoBehaviour
+namespace SS.Utilities
+{
+    public static class ItemToXML
     {
-        public bool make;
-        public List<RuntimeWeapon> candidates = new List<RuntimeWeapon>();
-        public string xml_version;
-        public string targetName;
 
-        void Update() {
-            if(!make)
-                return;
-            make = false;
+        [MenuItem("Assets/Inventory/Backup/Make Weapons Database Backup")]
+        public static void CreateInventory()
+        {
+            MakeXMLFromWeaponItems();
+        }
 
-            string xml = xml_version;
-            xml += "\n";
-            xml += "<root>";
-            foreach (RuntimeWeapon i in candidates)
+        static void MakeXMLFromWeaponItems()
+        {
+       
+            WeaponScriptableObject obj = Resources.Load("SS.WeaponScriptableObject") as WeaponScriptableObject;
+
+            if(obj == null)
             {
-                Weapon w = i.instance;
+                Debug.Log("No WeaponScriptableObject found! Aborting operation");
+                return;
+            }
 
-                xml += "<Weapon>" + "\n";
-                xml += "<WeaponName>" + w.itemName + "</WeaponName>" + "\n";
-                xml += "<oh_Idle>" + w.oh_idle + "</oh_Idle>" + "\n";
-                xml += "<th_Idle>" + w.th_idle + "</th_Idle>" + "\n";
+            string xml = "<?xml version = \"1.0\" encoding = \"UTF-8\" ?>"; 
+            xml += "\b";
+            xml += "<root>";
 
-                xml += ActionListToString(w.actions, "actions");
-                xml += ActionListToString(w.two_handedActions, "two_handed");
+            foreach (Weapon w in obj.weaponsAll)
+            {      
+                xml += "<weapon>" + "\n";
 
-                xml += "<parryMultiplier>" + w.parryMultiplier + "</parryMultiplier>" + "\n";
-                xml += "<backstabMultiplier>" + w.backstabMultiplier + "</backstabMultiplier>" + "\n";
-                xml += "<LeftHandMirror>" + w.leftHandMirror + "</LeftHandMirror>" + "\n";
+                    xml += "<itemName>" + w.itemName + "</itemName>" + "\n";
+                    xml += "<itemDescription>" + w.itemDescription + "</itemDescription>" + "\n";
+                    xml += "<oh_idle>" + w.oh_idle + "</oh_idle>" + "\n";
+                    xml += "<th_idle>" + w.th_idle + "</th_idle>" + "\n";
 
-                // xml += "<mp_x>" + w.model_pos.x + "</mp_x>";
-                // xml += "<mp_y>" + w.model_pos.y + "</mp_y>";
-                // xml += "<mp_z>" + w.model_pos.z + "</mp_z>" + "\n";
+                    xml += ActionListToString(w.actions, "actions");
+                    xml += ActionListToString(w.two_handedActions, "two_handed");
 
-                // xml += "<me_x>" + w.model_eulers.x + "</me_x>";
-                // xml += "<me_y>" + w.model_eulers.y + "</me_y>";
-                // xml += "<me_z>" + w.model_eulers.z + "</me_z>" + "\n";
+                    xml += "<parryMultiplier>" + w.parryMultiplier + "</parryMultiplier>" + "\n";
+                    xml += "<backstabMultiplier>" + w.backstabMultiplier + "</backstabMultiplier>" + "\n";
+                    xml += "<LeftHandMirror>" + w.leftHandMirror + "</LeftHandMirror>" + "\n";
 
-                xml += "<ms_x>" + w.model_scale.x + "</ms_x>";
-                xml += "<ms_y>" + w.model_scale.y + "</ms_y>";
-                xml += "<ms_z>" + w.model_scale.z + "</ms_z>" + "\n";
-                
-                xml += "</Weapon>" + "\n";
+                xml += VectorToXml(w.r_model_pos, "rmp");
+                xml += VectorToXml(w.r_model_eulers, "rme");
+                xml += VectorToXml(w.l_model_pos, "lmp");
+                xml += VectorToXml(w.l_model_eulers, "lme");
+                xml += VectorToXml(w.model_scale, "ms");
+
+                xml += "</weapon>" + "\n";
 
             }
+
             xml += "</root>";
 
             string path = StaticStrings.SaveLocation() + StaticStrings.itemFolder;
-            if(string.IsNullOrEmpty(targetName)){
-                targetName = "items_database.xml";
-            }
-            path += targetName;
+            
+            path += "weapons_database.xml";
 
             File.WriteAllText(path, xml);
+            Debug.Log("weapons_database.xml created!");
         }
 
-        string ActionListToString(List<Action> l, string nodeName) {
+        static string VectorToXml(Vector3 v, string nodePrefix)
+        {
             string xml = null;
-            
-                foreach (Action a in l)
-                {
-                    xml += "<" + nodeName + ">" + "\n";
-                    xml += "<ActionInput>" + a.input.ToString() + "</ActionInput>" + "\n";
-                    xml += "<ActionType>" + a.type.ToString() + "</ActionType>" + "\n";
-                    xml += "<targetAnim>" + a.targetAnim + "</targetAnim>" + "\n";
-                    xml += "<mirror>" + a.mirror + "</mirror>" + "\n";
-                    xml += "<canBeParried>" + a.canBeParried + "</canBeParried>" + "\n";
-                    xml += "<changeSpeed>" + a.changeSpeed + "</changeSpeed>" + "\n";
-                    xml += "<animSpeed>" + a.animSpeed.ToString() + "</animSpeed>" + "\n";
-                    xml += "<canRiposte>" + a.canRiposte + "</canRiposte>" + "\n";
-                    xml += "<canBackstab>" + a.canBackstab + "</canBackstab>" + "\n";
-                    xml += "<overrideDamageAnim>" + a.overrideDamageAnim + "</overrideDamageAnim>" + "\n";
-                    xml += "<damageAnim>" + a.damageAnim + "</damageAnim>" + "\n";
 
-                    WeaponStats s = a.weaponStats;
-                    xml += "<Physical>" + s.physical + "</Physical>" + "\n";
-                    xml += "<Strike>" + s.strike + "</Strike>" + "\n";
-                    xml += "<Slash>" + s.slash + "</Slash>" + "\n";
-                    xml += "<Thrust>" + s.thrust + "</Thrust>" + "\n";
-                    xml += "<Magic>" + s.magic + "</Magic>" + "\n";
-                    xml += "<Fire>" + s.fire + "</Fire>" + "\n";
-                    xml += "<Lightning>" + s.lightning + "</Lightning>" + "\n";
-                    xml += "<Dark>" + s.dark + "</Dark>" + "\n";
+            xml = "<" + nodePrefix + "_x>" + v.x + "</" + nodePrefix + "_x>" + "\n";
+            xml += "<" + nodePrefix + "_y>" + v.y + "</" + nodePrefix + "_y>" + "\n";
+            xml += "<" + nodePrefix + "_z>" + v.z + "</" + nodePrefix + "_z>" + "\n";
 
-                    xml += "</" + nodeName + ">" + "\n";
-                }
-                return xml;
+            return xml;
         }
-        
+
+
+        static string ActionListToString(List<Action> l, string nodeName)
+        {
+            string xml = null;
+
+            foreach (Action a in l)
+            {
+                xml += "<" + nodeName + ">" + "\n";
+                xml += "<ActionInput>" + a.input.ToString() + "</ActionInput>" + "\n";
+                xml += "<ActionType>" + a.type.ToString() + "</ActionType>" + "\n";
+                xml += "<targetAnim>" + a.targetAnim + "</targetAnim>" + "\n";
+                xml += "<mirror>" + a.mirror + "</mirror>" + "\n";
+                xml += "<canBeParried>" + a.canBeParried + "</canBeParried>" + "\n";
+                xml += "<changeSpeed>" + a.changeSpeed + "</changeSpeed>" + "\n";
+                xml += "<animSpeed>" + a.animSpeed.ToString() + "</animSpeed>" + "\n";
+                xml += "<canRiposte>" + a.canRiposte + "</canRiposte>" + "\n";
+                xml += "<canBackStab>" + a.canBackstab + "</canBackStab>" + "\n";
+                xml += "<overrideDamageAnim>" + a.overrideDamageAnim + "</overrideDamageAnim>" + "\n";
+                xml += "<damageAnim>" + a.damageAnim + "</damageAnim>" + "\n";
+
+                WeaponStats s = a.weaponStats;
+
+                xml += "<physical>" + s.physical + "</physical>" + "\n";
+                xml += "<strike>" + s.strike + "</strike>" + "\n";
+                xml += "<slash>" + s.slash + "</slash>" + "\n";
+                xml += "<thrust>" + s.thrust + "</thrust>" + "\n";
+                xml += "<magic>" + s.magic + "</magic>" + "\n";
+                xml += "<fire>" + s.fire + "</fire>" + "\n";
+                xml += "<lighting>" + s.lightning + "</lighting>" + "\n";
+                xml += "<dark>" + s.dark + "</dark>" + "\n";
+
+                xml += "</" + nodeName + ">" + "\n";
+            }
+
+            return xml;
+   
+        }
     }
 }

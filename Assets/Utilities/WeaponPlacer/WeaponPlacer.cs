@@ -25,10 +25,10 @@ namespace SS {
             WeaponScriptableObject obj = Resources.Load("SS.WeaponScriptableObject") as WeaponScriptableObject;
             if(obj == null)
                 return;
-            for (int i = 0; i < obj.weapons_all.Count; i++)
+            for (int i = 0; i < obj.weaponsAll.Count; i++)
             {
-                if(obj.weapons_all[i].itemName == weaponID) {
-                    Weapon w = obj.weapons_all[i];
+                if(obj.weaponsAll[i].itemName == weaponID) {
+                    Weapon w = obj.weaponsAll[i];
                     if(leftHand) {
                         w.l_model_eulers = weaponModel.transform.localEulerAngles;
                         w.l_model_pos = weaponModel.transform.localPosition;

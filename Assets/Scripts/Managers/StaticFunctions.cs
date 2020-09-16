@@ -42,8 +42,10 @@ namespace SS {
         }
 
         public static void DeepCopyActionToAction(Action a, Action w_a) {
+            a.input = w_a.input;
             a.targetAnim = w_a.targetAnim;
             a.type = w_a.type;
+            a.spellClass = w_a.spellClass;
             a.canBeParried = w_a.canBeParried;
             a.changeSpeed = w_a.changeSpeed;
             a.animSpeed = w_a.animSpeed;
@@ -63,6 +65,8 @@ namespace SS {
 
         a.targetAnim = w_a.targetAnim;
         a.type = w_a.type;
+        a.spellClass = w_a.spellClass;
+        a.canRiposte = w_a.canRiposte;
         a.canBeParried = w_a.canBeParried;
         a.changeSpeed = w_a.changeSpeed;
         a.animSpeed = w_a.animSpeed;
@@ -89,6 +93,7 @@ namespace SS {
             to.lightning = from.lightning;
             to.dark = from.dark;
         }
+
         public static Action GetAction(ActionInput inp, List<Action> actionSlots){
             for (int i = 0; i < actionSlots.Count; i++)
             {
@@ -96,6 +101,17 @@ namespace SS {
                     return actionSlots[i];
             }
             return null;
+        }
+
+        public static void DeepCopySpell(Spell from, Spell to) {
+            to.itemName = from.itemName;
+            to.itemDescription = from.itemDescription;
+            to.icon = from.icon;
+            to.spellType = from.spellType;
+            to.spellClass = from.spellClass;
+            to.projectile = from.projectile;
+            to.particlePrefab = from.particlePrefab;
+
         }
     }
 }

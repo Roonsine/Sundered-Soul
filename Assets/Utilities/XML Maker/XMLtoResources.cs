@@ -1,93 +1,115 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using System.IO;
 using System.Xml;
-using UnityEngine;
+using System;
+using UnityEditor;
 
-
-namespace SS.Utilities {
-    [ExecuteInEditMode]
-    public class XMLtoResources : MonoBehaviour
+namespace SS.Utilities
+{
+    public static class XMLtoResources
     {
-        public bool load;
 
-        public ResourcesManager resourcesManager;
-        public string weaponFileName = "items_database.xml";
-
-        void Update() {
-            if(!load)
-                return;
-            
-            load = false;
-            
-            LoadWeaponData(resourcesManager);
+        [MenuItem("Assets/Inventory/Backup/Read Weapons Database From Xml")]
+        public static void ReadXmlForWeapons()
+        {
+            LoadWeaponData();
         }
 
-        public void LoadWeaponData(ResourcesManager rm) {
+        public static void LoadWeaponData()
+        {
             string filePath = StaticStrings.SaveLocation() + StaticStrings.itemFolder;
-            filePath += weaponFileName;
+            filePath += "weapons_database.xml";
 
+            if(!File.Exists(filePath))
+            {
+                Debug.Log("weapons_database.xml doesnt exist! Aborting.");
+                return;
+            }
+
+            WeaponScriptableObject obj = Resources.Load("SA.WeaponScriptableObject") as WeaponScriptableObject;
+
+            if(obj == null)
+            {
+                Debug.Log("WeaponScriptableObject doesn't exist! Aborting.");
+                return;
+            }
+
+            
             XmlDocument doc = new XmlDocument();
             doc.Load(filePath);
 
-            foreach (XmlNode w in doc.DocumentElement.SelectNodes("//Weapon"))
+            foreach (XmlNode w in doc.DocumentElement.SelectNodes("//weapon")) 
             {
                 Weapon _w = new Weapon();
                 _w.actions = new List<Action>();
-                _w.actions = new List<Action>();
+                _w.two_handedActions = new List<Action>();
 
-                //XmlNode weaponId = w.SelectSingleNode("Weapon_ID");
-                //_w.weaponID = weaponId.InnerText;
-                XmlNode oh_Idle = w.SelectSingleNode("oh_Idle");
-                _w.oh_idle = oh_Idle.InnerText;
-                XmlNode th_Idle = w.SelectSingleNode("th_Idle");
-                _w.th_idle = th_Idle.InnerText;
+                XmlNode itemName = w.SelectSingleNode("itemName");
+                _w.itemName = itemName.InnerText;
 
-                XmlToActions(doc, "actions", ref _w);
-                XmlToActions(doc, "twoHanded", ref _w);
+                XmlNode itemDescription = w.SelectSingleNode("itemDescription");
+                _w.itemDescription = itemDescription.InnerText;
 
-                XmlNode parryMultiplier = w.SelectSingleNode("parryMultiplier");
+                XmlNode oh_idle = w.SelectSingleNode("oh_idle");
+                _w.oh_idle = oh_idle.InnerText;
+                XmlNode th_idle = w.SelectSingleNode("th_idle");
+                _w.th_idle = th_idle.InnerText;
+
+                XmlNode parryMultiplier = w.SelectSingleNode("parryMultiplier"); 
                 float.TryParse(parryMultiplier.InnerText, out _w.parryMultiplier);
                 XmlNode backstabMultiplier = w.SelectSingleNode("backstabMultiplier");
                 float.TryParse(backstabMultiplier.InnerText, out _w.backstabMultiplier);
+
+                XmlToActions(doc, "actions", ref _w);
+                XmlToActions(doc, "two_handed", ref _w);
+
                 XmlNode LeftHandMirror = w.SelectSingleNode("LeftHandMirror");
                 _w.leftHandMirror = (LeftHandMirror.InnerText == "True");
-                
-                // _w.model_pos = XmlToVector(w, "mp");
-                // _w.model_eulers = XmlToVector(w,"me");
+
+                _w.r_model_pos = XmlToVector(w, "rmp");
+                _w.r_model_eulers = XmlToVector(w, "rme");
+                _w.l_model_pos = XmlToVector(w, "lmp");
+                _w.l_model_eulers = XmlToVector(w, "lme");
                 _w.model_scale = XmlToVector(w, "ms");
 
-                //resourcesManager.weaponList.Add(_w);
+                obj.weaponsAll.Add(_w);
             }
         }
 
-        Vector3 XmlToVector(XmlNode w, string prefix) {
-                XmlNode _x = w.SelectSingleNode(prefix + "_x");
-                float x = 0;
-                float.TryParse(_x.InnerText, out x);
+        static Vector3 XmlToVector(XmlNode w, string prefix)
+        {
+            XmlNode _x = w.SelectSingleNode(prefix + "_x");
+            float x = 0;
+            float.TryParse(_x.InnerText, out x);
 
-                XmlNode _y = w.SelectSingleNode(prefix + "_y");
-                float y = 0;
-                float.TryParse(_y.InnerText, out y);
+            XmlNode _y = w.SelectSingleNode(prefix + "_y");
+            float y = 0;
+            float.TryParse(_y.InnerText, out y);
 
-                XmlNode _z = w.SelectSingleNode(prefix + "_z");
-                float z = 0;
-                float.TryParse(_z.InnerText, out z);
+            XmlNode _z = w.SelectSingleNode(prefix + "_z");
+            float z = 0;
+            float.TryParse(_z.InnerText, out z);
 
-                return new Vector3(x,y,z);
+            return new Vector3(x, y, z);
         }
 
-        void XmlToActions(XmlDocument doc, string nodeName, ref Weapon _w) {
+        static void XmlToActions(XmlDocument doc,string nodeName, ref Weapon _w)
+        {
             foreach (XmlNode a in doc.DocumentElement.SelectNodes("//" + nodeName))
             {
                 Action _a = new Action();
+
                 XmlNode actionInput = a.SelectSingleNode("ActionInput");
-                _a.input = (ActionInput) Enum.Parse(typeof(ActionInput), actionInput.InnerText);
+                _a.input = (ActionInput) Enum.Parse( typeof(ActionInput),actionInput.InnerText);
+
                 XmlNode actionType = a.SelectSingleNode("ActionType");
-                _a.type = (ActionType) Enum.Parse(typeof(ActionType), actionType.InnerText);
+                _a.type = (ActionType)Enum.Parse(typeof(ActionType), actionType.InnerText);
+
                 XmlNode targetAnim = a.SelectSingleNode("targetAnim");
                 _a.targetAnim = targetAnim.InnerText;
+
                 XmlNode mirror = a.SelectSingleNode("mirror");
                 _a.mirror = (mirror.InnerText == "True");
                 XmlNode canBeParried = a.SelectSingleNode("canBeParried");
@@ -100,8 +122,8 @@ namespace SS.Utilities {
 
                 XmlNode canRiposte = a.SelectSingleNode("canRiposte");
                 _a.canRiposte = (canRiposte.InnerText == "True");
-                XmlNode canBackstab = a.SelectSingleNode("canBackstab");
-                _a.canBackstab = (canBackstab.InnerText == "True");
+                XmlNode canBackStab = a.SelectSingleNode("canBackStab");
+                _a.canBackstab = (canBackStab.InnerText == "True");
                 XmlNode overrideDamageAnim = a.SelectSingleNode("overrideDamageAnim");
                 _a.overrideDamageAnim = (overrideDamageAnim.InnerText == "True");
 
@@ -110,31 +132,34 @@ namespace SS.Utilities {
 
                 _a.weaponStats = new WeaponStats();
 
-                XmlNode Physical = a.SelectSingleNode("Physical");
-                int.TryParse(Physical.InnerText, out _a.weaponStats.physical);
-                XmlNode Strike = a.SelectSingleNode("Strike");
-                int.TryParse(Strike.InnerText, out _a.weaponStats.strike);
-                XmlNode Slash = a.SelectSingleNode("Slash");
-                int.TryParse(Slash.InnerText, out _a.weaponStats.slash);
-                XmlNode Thrust = a.SelectSingleNode("Thrust");
-                int.TryParse(Thrust.InnerText, out _a.weaponStats.thrust);
-                XmlNode Magic = a.SelectSingleNode("Magic");
-                int.TryParse(Magic.InnerText, out _a.weaponStats.magic);
-                XmlNode Fire = a.SelectSingleNode("Fire");
-                int.TryParse(Fire.InnerText, out _a.weaponStats.fire);
-                XmlNode Lightning = a.SelectSingleNode("Lightning");
-                int.TryParse(Lightning.InnerText, out _a.weaponStats.lightning);
-                XmlNode Dark = a.SelectSingleNode("Dark");
-                int.TryParse(Dark.InnerText, out _a.weaponStats.dark);
+                XmlNode physical = a.SelectSingleNode("physical");
+                int.TryParse(physical.InnerText, out _a.weaponStats.physical);
+                XmlNode strike = a.SelectSingleNode("strike");
+                int.TryParse(strike.InnerText, out _a.weaponStats.strike);
+                XmlNode slash = a.SelectSingleNode("slash");
+                int.TryParse(slash.InnerText, out _a.weaponStats.slash);
+                XmlNode thrust = a.SelectSingleNode("thrust");
+                int.TryParse(thrust.InnerText, out _a.weaponStats.thrust);
 
-                if(nodeName == "actions"){
+                XmlNode magic = a.SelectSingleNode("magic");
+                int.TryParse(magic.InnerText, out _a.weaponStats.magic);
+                XmlNode fire = a.SelectSingleNode("fire");
+                int.TryParse(fire.InnerText, out _a.weaponStats.fire);
+                XmlNode lighting = a.SelectSingleNode("lighting");
+                int.TryParse(lighting.InnerText, out _a.weaponStats.lightning);
+                XmlNode dark = a.SelectSingleNode("dark");
+                int.TryParse(dark.InnerText, out _a.weaponStats.dark);
+
+                if(nodeName == "actions")
+                {
                     _w.actions.Add(_a);
-                } else {
-                    Debug.Log(nodeName);
+                }
+                else
+                {
                     _w.two_handedActions.Add(_a);
                 }
+                
             }
-
         }
     }
 }

@@ -5,6 +5,6 @@ using UnityEngine;
 namespace SS {
     public class WeaponScriptableObject : ScriptableObject
     {
-        public List<Weapon> weapons_all = new List<Weapon>();
+        public List<Weapon> weaponsAll = new List<Weapon>();
     }
 }

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47034f6dd61081f46b756742f572dcf2, type: 3}
+  m_Name: SS.SpellItemsScriptableObject
+  m_EditorClassIdentifier: 
+  spellItems:
+  - itemName: Fireball
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 94ac09f7d650ccc409da2181c96840b9, type: 3}
+    spellType: 0
+    spellClass: 0
+    projectile: {fileID: 100004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
+    particlePrefab: {fileID: 100004, guid: 1c20c7996d683754db1f0f62a361952c, type: 3}
+  - itemName: Firebreath
+    itemDescription: 
+    icon: {fileID: 21300000, guid: 10a9e1e0e4930ac46af29038dc90087d, type: 3}
+    spellType: 2
+    spellClass: 0
+    projectile: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1,
+      type: 3}
+    particlePrefab: {fileID: 1134129239631916, guid: 7e48ba6b1b968764490bbc70b66e3fe1,
+      type: 3}
+  - itemName: Heal
+    itemDescription: 
+    icon: {fileID: 21300000, guid: ec944b21b6c01a246bdd5cd05164ea8e, type: 3}
+    spellType: 1
+    spellClass: 1
+    projectile: {fileID: 100000, guid: ada5d62ffe762ce4fbccc70dcdbc9022, type: 3}
+    particlePrefab: {fileID: 100000, guid: ada5d62ffe762ce4fbccc70dcdbc9022, type: 3}

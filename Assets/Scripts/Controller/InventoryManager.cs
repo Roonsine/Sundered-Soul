@@ -8,7 +8,16 @@ namespace SS {
     {
         public List<string> rh_weapons;
         public List<string> lh_weapons;
+        public List<string> spell_items;
+
+        public int r_index;
+        public int l_index;
+        public int s_index;
+        List<RuntimeWeapon> r_r_weapons = new List<RuntimeWeapon>();
+        List<RuntimeWeapon> r_l_weapons = new List<RuntimeWeapon>();
+        List<RuntimeSpellItems> r_spells = new List<RuntimeSpellItems>();
         
+        public RuntimeSpellItems currentSpell;
         public RuntimeWeapon rightHandWeapon;
         public bool hasLeftHandWeapon = true;
         public RuntimeWeapon leftHandWeapon;
@@ -19,33 +28,74 @@ namespace SS {
 
         public void Init(StateManager st) {
             states = st;
+            LoadInventory();
 
-            if(rh_weapons.Count > 0){
-                rightHandWeapon = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[0]));
-            }
-            if(lh_weapons.Count > 0) {
-                leftHandWeapon = WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[0]), true);
-                hasLeftHandWeapon = true;
-            }
-
-            if(rightHandWeapon != null)
-                EquipWeapon(rightHandWeapon, ResourcesManager.singleton.GetWeapon(rh_weapons[0]), false);           
-
-            if(leftHandWeapon != null)
-                EquipWeapon(leftHandWeapon,ResourcesManager.singleton.GetWeapon(lh_weapons[0]), true);
-
-            hasLeftHandWeapon = (leftHandWeapon != null);
-
-            InitAllDamageColliders(st);
-            CloseAllDamageColliders();
             ParryCollider pr = parryCollider.GetComponent<ParryCollider>();
             pr.InitPlayer(st);
             CloseParryCollider();
-
         }
 
-        // _w weapon variable was added in, as well as the w.init() function, w.weaponModel is never set so I had to manage a work around for it.
-        public void EquipWeapon(RuntimeWeapon w, Weapon _w, bool isLeft = false) {
+        public void LoadInventory(){
+
+            for (int i = 0; i < rh_weapons.Count; i++)
+            {
+                WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(rh_weapons[i]));
+            }
+
+            for (int i = 0; i < lh_weapons.Count; i++)
+            {
+                WeaponToRuntimeWeapon(ResourcesManager.singleton.GetWeapon(lh_weapons[i]), true);
+            }
+
+            if(r_r_weapons.Count > 0) {
+                if(r_index > r_r_weapons.Count - 1)
+                    r_index = 0;
+                
+                rightHandWeapon = r_r_weapons[r_index];
+            }
+            
+            if(r_l_weapons.Count > 0) {
+                if(l_index > r_l_weapons.Count - 1)
+                    l_index = 0;
+                
+                leftHandWeapon = r_l_weapons[l_index];
+            }
+
+            if(rightHandWeapon != null)
+                EquipWeapon(rightHandWeapon, false);           
+
+            if(leftHandWeapon != null){
+                EquipWeapon(leftHandWeapon, true);
+                hasLeftHandWeapon = true;
+            }
+
+            for (int i = 0; i < spell_items.Count; i++)
+            {
+                SpellToRuntimeSpell(ResourcesManager.singleton.GetSpell(spell_items[i]));
+            }
+
+            if(r_spells.Count > 0)
+                if(s_index > r_spells.Count -1)
+                    s_index = 0;
+                EquipSpell(r_spells[s_index]);
+
+            InitAllDamageColliders(states);
+            CloseAllDamageColliders();
+        }
+
+        public void EquipWeapon(RuntimeWeapon w, bool isLeft = false) {
+            if(isLeft) {
+                if(leftHandWeapon != null) {
+                    leftHandWeapon.weaponModel.SetActive(false);
+                }
+                leftHandWeapon = w;
+            } else {
+                if(rightHandWeapon != null) {
+                    rightHandWeapon.weaponModel.SetActive(false);
+                }
+
+                rightHandWeapon = w;
+            }
             string targetIdle = w.instance.oh_idle;
             targetIdle += (isLeft) ? StaticStrings._l : StaticStrings._r;
             states.anim.SetBool(StaticStrings.mirror, isLeft);
@@ -57,8 +107,13 @@ namespace SS {
                 (isLeft)?
                 QSlotType.lh : QSlotType.rh, w.instance.icon);
             
-            // w.init(_w);
             w.weaponModel.SetActive(true);
+        }
+
+        public void EquipSpell(RuntimeSpellItems spell) {
+            currentSpell = spell;
+            QuickSlot uiSlot = QuickSlot.singleton;
+            uiSlot.UpdateSlot(QSlotType.spell, spell.instance.icon);
         }
 
         public Weapon GetCurrentWeapon(bool isLeft) {
@@ -103,9 +158,20 @@ namespace SS {
             parryCollider.SetActive(true);
         }
 
+        public RuntimeSpellItems SpellToRuntimeSpell (Spell s) {
+            GameObject go = new GameObject();
+            RuntimeSpellItems inst = go.AddComponent<RuntimeSpellItems>();
+            inst.instance = new Spell();
+            StaticFunctions.DeepCopySpell(s, inst.instance);
+            go.name = s.itemName;
+            r_spells.Add(inst);
+            return inst;
+        }
+
         public RuntimeWeapon WeaponToRuntimeWeapon(Weapon w, bool isLeft = false) {
             GameObject go = new GameObject();
-            RuntimeWeapon inst = go.AddComponent<RuntimeWeapon>();           
+            RuntimeWeapon inst = go.AddComponent<RuntimeWeapon>();
+            go.name = w.itemName;           
 
             inst.instance = new Weapon();
             StaticFunctions.DeepCopyWeapon(w, inst.instance);
@@ -124,7 +190,42 @@ namespace SS {
             
             inst.w_hook = inst.weaponModel.GetComponentInChildren<WeaponHook>();
             inst.w_hook.InitDamageColliders(states);
+
+            if(isLeft) {
+                r_l_weapons.Add(inst);
+            } else {
+                r_r_weapons.Add(inst);
+            }
+
+            inst.weaponModel.SetActive(false);
             return inst;
+        }
+
+        public void ChangeToNextWeapon(bool isLeft) {
+            if(isLeft) {
+                if(l_index < r_l_weapons.Count -1) 
+                    l_index++;
+                else 
+                    l_index = 0;
+                
+                EquipWeapon(r_l_weapons[l_index], true);
+            } else {
+                if(r_index < r_r_weapons.Count - 1) 
+                    r_index++;
+                else 
+                    r_index = 0;
+                EquipWeapon(r_r_weapons[r_index]);
+            }
+
+            states.actionManager.UpdateActionsOneHanded();
+        }
+
+        public void ChangeNextSpell() {
+            if(s_index < r_spells.Count -1)
+                s_index++;
+            else
+                s_index = 0;
+            EquipSpell(r_spells[s_index]);
         }
     }
 
@@ -164,4 +265,14 @@ namespace SS {
         public Vector3 l_model_eulers;
         public Vector3 model_scale;
     }
+
+    [System.Serializable]
+    public class Spell : Item {
+        public SpellType spellType;
+        public SpellClass spellClass;
+        public GameObject projectile;
+        public GameObject particlePrefab;
+    }
+
+
 }

@@ -21,6 +21,18 @@ namespace SS
         float lt_axis;
         bool lt_input;
 
+        float d_y;
+        float d_x;
+        bool d_up;
+        bool d_down;
+        bool d_right;
+        bool d_left;
+
+        bool p_d_up;
+        bool p_d_down;
+        bool p_d_left;
+        bool p_d_right;
+
         bool leftAxis_down;
         bool rightAxis_down;
 
@@ -83,6 +95,15 @@ namespace SS
 
             if(b_input)
                 b_timer += delta;
+
+            d_x = Input.GetAxis(StaticStrings.Pad_X);
+            d_y = Input.GetAxis(StaticStrings.Pad_Y);
+
+            d_up = Input.GetKeyUp(KeyCode.Alpha1) || d_y > 0;
+            d_down = Input.GetKeyUp(KeyCode.Alpha2) || d_y < 0;
+            d_left = Input.GetKeyUp(KeyCode.Alpha3) || d_x < 0;
+            d_right = Input.GetKeyUp(KeyCode.Alpha4) || d_x > 0;
+
         }
 
         void UpdateStates()
@@ -147,7 +168,41 @@ namespace SS
                 states.lockOnTransform = states.lockOnTarget.GetTarget();
                 camManager.lockonTransform = states.lockOnTransform;
                 camManager.lockon = states.lockOn;
-            }   
+            }
+            HandleQuickSlotChange();
+        }
+
+        void HandleQuickSlotChange(){
+            if(states.canMove == false)
+                return;
+
+            if(d_left){
+                if(!p_d_left){
+                    states.inventoryManager.ChangeToNextWeapon(true);
+                    p_d_left = true;
+                }
+            }
+            if(d_right) {
+                if(!p_d_right){
+                    states.inventoryManager.ChangeToNextWeapon(false);
+                    p_d_right = true;
+                }
+            }
+
+            if(d_up) {
+                if(!p_d_up) {
+                    p_d_up = true;
+                    states.inventoryManager.ChangeNextSpell();
+                }
+            }
+            if(!d_down) 
+                p_d_down = false;
+            if(!d_up) 
+                p_d_up = false;
+            if(!d_left)
+                p_d_left = false;
+            if(!d_right)
+                p_d_right = false;
         }
 
         void ResetInputsNStates() {

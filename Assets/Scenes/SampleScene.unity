@@ -32500,6 +32500,7 @@ MonoBehaviour:
     actions:
     - input: 0
       type: 1
+      spellClass: 0
       targetAnim: 
       mirror: 0
       canBeParried: 0
@@ -32522,6 +32523,7 @@ MonoBehaviour:
         dark: 0
     - input: 2
       type: 3
+      spellClass: 0
       targetAnim: parry
       mirror: 0
       canBeParried: 0
@@ -58346,12 +58348,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 812137606}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &813205634 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4676408568124400190, guid: a63c165521d831d468b20ff312743813,
-    type: 3}
-  m_PrefabInstance: {fileID: 1527700154}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &814486440
 GameObject:
   m_ObjectHideFlags: 0
@@ -78308,9 +78304,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647b78840b4bc934281d3a1aeaa469eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponID: shield
-  weaponModel: {fileID: 1283760350}
-  leftHand: 1
+  weaponID: Pyromancy Flame
+  weaponModel: {fileID: 1532882142243765372, guid: 2ce0a20e7b3c5b245b46b287b5f93b75,
+    type: 3}
+  leftHand: 0
   saveWeapon: 0
 --- !u!4 &1120677718
 Transform:
@@ -88961,12 +88958,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1283013464}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1283760350 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2205176414987044023, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1393890570}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1283924000
 GameObject:
   m_ObjectHideFlags: 0
@@ -93280,6 +93271,7 @@ MonoBehaviour:
     actions:
     - input: 0
       type: 0
+      spellClass: 0
       targetAnim: oh_attack_1
       mirror: 0
       canBeParried: 1
@@ -93302,6 +93294,7 @@ MonoBehaviour:
         dark: 0
     - input: 2
       type: 0
+      spellClass: 0
       targetAnim: oh_attack_3
       mirror: 0
       canBeParried: 1
@@ -93325,6 +93318,7 @@ MonoBehaviour:
     two_handedActions:
     - input: 0
       type: 0
+      spellClass: 0
       targetAnim: th_attack_1
       mirror: 0
       canBeParried: 1
@@ -93347,6 +93341,7 @@ MonoBehaviour:
         dark: 0
     - input: 2
       type: 0
+      spellClass: 0
       targetAnim: th_attack_2
       mirror: 0
       canBeParried: 1
@@ -95254,80 +95249,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1393007135}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1393890570
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 813205634}
-    m_Modifications:
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.00037792604
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.018466048
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.013828719
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.4228213
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.2237844
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.06461569
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.8757668
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044016, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2205176414987044023, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_Name
-      value: LeftHandPivot
-      objectReference: {fileID: 0}
-    - target: {fileID: 7907108537128364743, guid: e2fb9b85974c4ab49a8fcca06f84eab3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e2fb9b85974c4ab49a8fcca06f84eab3, type: 3}
 --- !u!1 &1393968622
 GameObject:
   m_ObjectHideFlags: 0
@@ -97634,6 +97555,68 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423123505}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1426346487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1426346489}
+  - component: {fileID: 1426346488}
+  m_Layer: 0
+  m_Name: NOTES
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1426346488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426346487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6555ef13eaeac24cab7de41bb3d10d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notes: 'TODO:
+
+    -Fix Shield Animations with body
+
+    -IK
+
+    -Allow Rotations
+    before attacking
+
+    -Spells
+
+    -Add logic delegates on events
+
+
+
+    ICONS
+    NEEDED:
+
+    -'
+--- !u!4 &1426346489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426346487}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.89519954, y: 1.5794746, z: -0.1464203}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1426637724 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8071392505683064764, guid: a63c165521d831d468b20ff312743813,
@@ -133774,6 +133757,7 @@ MonoBehaviour:
   currentAction:
     input: 0
     type: 0
+    spellClass: 0
     targetAnim: 
     mirror: 0
     canBeParried: 0
@@ -133809,6 +133793,7 @@ MonoBehaviour:
   actionSlots:
   - input: 0
     type: 0
+    spellClass: 0
     targetAnim: oh_attack_1
     mirror: 0
     canBeParried: 0
@@ -133831,6 +133816,7 @@ MonoBehaviour:
       dark: 0
   - input: 1
     type: 0
+    spellClass: 0
     targetAnim: oh_attack_2
     mirror: 0
     canBeParried: 0
@@ -133853,6 +133839,7 @@ MonoBehaviour:
       dark: 0
   - input: 2
     type: 0
+    spellClass: 0
     targetAnim: 
     mirror: 0
     canBeParried: 0
@@ -133875,6 +133862,7 @@ MonoBehaviour:
       dark: 0
   - input: 3
     type: 0
+    spellClass: 0
     targetAnim: parry
     mirror: 0
     canBeParried: 0
@@ -133911,12 +133899,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rh_weapons:
-  - sword
+  - Sword
+  - Pyromancy Flame
   lh_weapons:
-  - shield
-  rightHandWeapon: {fileID: 1355655506}
+  - Shield
+  - Pyromancy Flame
+  spell_items:
+  - Fireball
+  - Firebreath
+  - Heal
+  r_index: 0
+  l_index: 0
+  s_index: 0
+  currentSpell: {fileID: 0}
+  rightHandWeapon: {fileID: 0}
   hasLeftHandWeapon: 1
-  leftHandWeapon: {fileID: 445709957}
+  leftHandWeapon: {fileID: 0}
   parryCollider: {fileID: 745352553}
 --- !u!1 &1972140376
 GameObject:

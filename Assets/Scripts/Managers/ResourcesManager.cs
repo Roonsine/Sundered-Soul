@@ -5,47 +5,87 @@ using UnityEngine;
 namespace SS {
     public class ResourcesManager : MonoBehaviour
     {
-        Dictionary<string, int> item_ids = new Dictionary<string,int>();
+        Dictionary<string,int> spellIds = new Dictionary<string, int>();
+        Dictionary<string, int> weaponIds = new Dictionary<string,int>();
         public static ResourcesManager singleton;
+
         void Awake() {
             singleton = this;
-            LoadIds();
+            LoadWeaponIds();
+            LoadSpellIds();
         }
 
+        void LoadSpellIds() {
+            SpellItemsScriptableObject obj = Resources.Load("SS.SpellItemsScriptableObject") as SpellItemsScriptableObject;
+            if(obj == null){
+                Debug.Log("SpellItemsScriptableObject could not be loaded.");
+                return;
+            }
 
-
-        void LoadIds() {
-            WeaponScriptableObject obj = Resources.Load("SS.WeaponScriptableObject") as WeaponScriptableObject;
-            for (int i = 0; i < obj.weapons_all.Count; i++)
+            for (int i = 0; i < obj.spellItems.Count; i++)
             {
-                if(item_ids.ContainsKey(obj.weapons_all[i].itemName)) {
-                    Debug.Log("item is a duplicate.");
+                if(spellIds.ContainsKey(obj.spellItems[i].itemName)) {
+                    Debug.Log(obj.spellItems[i].itemName + " item is a duplicate");
                 } else {
-                    item_ids.Add(obj.weapons_all[i].itemName, i);
+                    spellIds.Add(obj.spellItems[i].itemName, i);
+                }
+            }
+        }
+
+        void LoadWeaponIds() {
+            WeaponScriptableObject obj = Resources.Load("SS.WeaponScriptableObject") as WeaponScriptableObject;
+            if(obj == null){
+                Debug.Log("WeaponScriptableObject could not be loaded.");
+                return;
+            }
+            for (int i = 0; i < obj.weaponsAll.Count; i++)
+            {
+                if(weaponIds.ContainsKey(obj.weaponsAll[i].itemName)) {
+                    Debug.Log(obj.weaponsAll[i].itemName + " item is a duplicate.");
+                } else {
+                    weaponIds.Add(obj.weaponsAll[i].itemName, i);
                 }
             }
         }
         
-        int GetItemIdFromString(string id) {
+        int GetWeaponIdFromString(string id) {
             int index = -1;
-            if(item_ids.TryGetValue(id, out index)){
+            if(weaponIds.TryGetValue(id, out index)){
                 return index;
             }
-            return -1;
+            return index;
         }
     
         public Weapon GetWeapon(string id) {
             WeaponScriptableObject obj = Resources.Load("SS.WeaponScriptableObject") as WeaponScriptableObject;
-            int index = GetItemIdFromString(id);
+            if(obj == null){
+                Debug.Log("WeaponScriptableObject could not be loaded.");
+                return null;
+            }
+            int index = GetWeaponIdFromString(id);
             if(index == -1)
                 return null;            
-            return obj.weapons_all[index];
+            return obj.weaponsAll[index];
+        }
 
-            /* int index = -1;
-            if(weapon_dict.TryGetValue(id, out index)) {
-                return weaponList[index];
+        int GetSpellIdFromString(string id) {
+            int index = -1;
+            if(spellIds.TryGetValue(id, out index)) {
+                return index;
             }
-            return null;*/
+            return index;
+        }
+
+        public Spell GetSpell(string id) {
+            SpellItemsScriptableObject obj = Resources.Load("SS.SpellItemsScriptableObject") as SpellItemsScriptableObject;
+            if(obj == null){
+                Debug.Log("SpellItemsScriptableObject could not be loaded.");
+                return null;
+            }
+            int index = GetSpellIdFromString(id);
+            if(index == -1)
+                return null;
+            return obj.spellItems[index];
         }
     }
 }
